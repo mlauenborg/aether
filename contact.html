@@ -24,7 +24,6 @@
             overflow-x: hidden;
             cursor: none;
         }
-        @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
         body { animation: pageIn 0.6s ease forwards; }
         @media (pointer: coarse) { body { cursor: auto; } }
 
@@ -202,7 +201,7 @@
             background: rgba(3, 0, 20, 0.97);
             backdrop-filter: none; -webkit-backdrop-filter: none;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 2rem; padding-top: 64px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            gap: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
         .nav-overlay.open { opacity: 1; pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
         .nav-overlay-link {
@@ -364,7 +363,7 @@
         .magnetic { transition: transform 0.15s ease; }
 
         /* ── Enhanced pageIn ── */
-        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
+        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: none; } }
     </style>
     <link rel="manifest" href="manifest.json">
 </head>
@@ -393,7 +392,6 @@
         <a href="gallery.html" class="nav-overlay-link">Gallery</a>
         <a href="contact.html" class="nav-overlay-link active">Contact</a>
         <a href="lab.html" class="nav-overlay-link">Lab</a>
-        <button class="theme-toggle" id="themeToggleMobile" aria-label="Toggle theme">🌙</button>
     </div>
 
     <!-- Custom Cursor -->
