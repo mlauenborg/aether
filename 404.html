@@ -53,14 +53,14 @@
         .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         .nav-hamburger.open span:nth-child(2) { opacity: 0; }
         .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-        .nav-overlay { position: fixed; inset: 0; background: rgba(3,0,20,0.97); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-overlay { position: fixed; inset: 0; background: rgba(3,0,20,0.97); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; padding-top: 64px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .nav-overlay.open { opacity: 1; pointer-events: all; }
         .nav-overlay-link { font-family: 'Playfair Display', serif; font-size: 2rem; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
         .nav-overlay-link:hover { color: #fff; }
         @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } .nav { padding: 0 1.5rem; } }
 
         /* Theme Toggle */
-        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; transition: all 0.3s; margin-right: 0.5rem; }
+        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; transition: all 0.3s; margin-right: 0.5rem; flex-shrink: 0; z-index: 1; }
         .theme-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
 
         /* Page entry */
@@ -93,9 +93,9 @@
             <a href="about.html" class="nav-link">About</a>
             <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="contact.html" class="nav-link">Contact</a>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
             <a href="lab.html" class="nav-link">Lab</a>
         </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
         <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
