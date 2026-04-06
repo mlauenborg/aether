@@ -113,6 +113,13 @@
 
         /* Footer */
         .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 2rem; text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75rem; letter-spacing: 0.1em; position: relative; z-index: 2; }
+
+        /* ── View Transitions API ── */
+        @view-transition { navigation: auto; }
+        ::view-transition-old(root) { animation: 0.3s ease-out both fadeOut; }
+        ::view-transition-new(root) { animation: 0.3s ease-in both fadeIn; }
+        @keyframes fadeOut { to { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -309,10 +316,8 @@
                     if ('startViewTransition' in document) {
                         document.startViewTransition(() => { window.location.href = href; });
                     } else {
+                        document.body.style.transition = 'opacity 0.3s ease';
                         document.body.style.opacity = '0';
-                        document.body.style.transform = 'scale(0.98)';
-                        document.body.style.filter = 'blur(4px)';
-                        document.body.style.transition = 'all 0.3s ease';
                         setTimeout(() => { window.location.href = href; }, 300);
                     }
                 });
@@ -514,6 +519,20 @@ void main() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(() => {});
         }
+
+        /* ── Parallax Scroll (Nebula + Aurora) ── */
+        (function() {
+            var nebulas = document.querySelectorAll('.nebula');
+            var aurora = document.querySelector('.aurora');
+            var speeds = [0.03, 0.05, 0.07, 0.08, 0.1];
+            window.addEventListener('scroll', function() {
+                var scrollY = window.pageYOffset;
+                nebulas.forEach(function(nebula, i) {
+                    nebula.style.marginTop = -(scrollY * (speeds[i] || 0.05)) + 'px';
+                });
+                if (aurora) aurora.style.marginTop = -(scrollY * 0.04) + 'px';
+            }, { passive: true });
+        })();
     </script>
 </body>
 </html>
