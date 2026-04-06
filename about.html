@@ -406,18 +406,19 @@
             inset: 0;
             z-index: 8999;
             background: rgba(3, 0, 20, 0.97);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2.5rem;
+            gap: 2rem;
+            padding-top: 64px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
         }
-        .nav-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-overlay.open { opacity: 1; pointer-events: all; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
         .nav-overlay-link {
             font-family: 'Playfair Display', serif;
             font-size: clamp(2rem, 7vw, 2.8rem);
@@ -643,7 +644,7 @@
         #scrollProgress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4,#f43f5e); z-index: 9999; transition: width 0.1s linear; pointer-events: none; }
 
         /* ── Theme Toggle ── */
-        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; margin-right: 0.5rem; transition: all 0.3s; }
+        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; margin-right: 0.5rem; transition: all 0.3s; flex-shrink: 0; z-index: 1; }
         .theme-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
 
         /* ── Day Theme ── */
@@ -699,9 +700,9 @@
             <a href="about.html" class="nav-link active">About</a>
             <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="contact.html" class="nav-link">Contact</a>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
             <a href="lab.html" class="nav-link">Lab</a>
         </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
         <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
