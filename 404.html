@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÆTHER — 404</title>
+    <meta name="description" content="This page has been consumed by the void.">
+    <meta name="theme-color" content="#030014">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: #030014; color: #e2e8f0; overflow-x: hidden; cursor: none; min-height: 100vh; }
+        @media (pointer: coarse) { body { cursor: auto; } }
+
+        /* Cursor */
+        .cursor-dot, .cursor-ring, .cursor-glow { position: fixed; pointer-events: none; z-index: 10000; border-radius: 50%; transition: opacity 0.3s; }
+        .cursor-dot { width: 6px; height: 6px; background: #e2e8f0; transform: translate(-50%, -50%); }
+        .cursor-ring { width: 36px; height: 36px; border: 1.5px solid rgba(226,232,240,0.5); transform: translate(-50%, -50%); transition: width 0.25s, height 0.25s, border-color 0.25s; }
+        .cursor-glow { width: 120px; height: 120px; background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%); transform: translate(-50%, -50%); }
+        @media (pointer: coarse) { .cursor-dot, .cursor-ring, .cursor-glow { display: none; } }
+
+        /* Background */
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .nebula { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.18; z-index: 1; animation: nebulaDrift 30s ease-in-out infinite alternate; }
+        .nebula:nth-child(1) { width: 600px; height: 600px; background: radial-gradient(circle, #6366f1, transparent 70%); top: 10%; left: -5%; animation-duration: 35s; }
+        .nebula:nth-child(2) { width: 500px; height: 500px; background: radial-gradient(circle, #8b5cf6, transparent 70%); top: 50%; right: -10%; animation-duration: 28s; animation-delay: -5s; }
+        .nebula:nth-child(3) { width: 450px; height: 450px; background: radial-gradient(circle, #06b6d4, transparent 70%); bottom: 20%; left: 30%; animation-duration: 32s; animation-delay: -10s; }
+        .nebula:nth-child(4) { width: 550px; height: 550px; background: radial-gradient(circle, #f43f5e, transparent 70%); top: 30%; left: 50%; animation-duration: 40s; animation-delay: -15s; }
+        .nebula:nth-child(5) { width: 400px; height: 400px; background: radial-gradient(circle, #f59e0b, transparent 70%); bottom: 5%; right: 20%; animation-duration: 25s; animation-delay: -8s; }
+        @keyframes nebulaDrift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-30px) scale(1.15); } }
+        .aurora { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.08; background: radial-gradient(ellipse 80% 50% at 20% 40%, #6366f1, transparent), radial-gradient(ellipse 60% 40% at 70% 60%, #06b6d4, transparent), radial-gradient(ellipse 70% 50% at 50% 20%, #f43f5e, transparent); animation: auroraDrift 20s ease-in-out infinite alternate; }
+        @keyframes auroraDrift { 0% { transform: translateX(-20px) translateY(0); opacity: 0.06; } 50% { opacity: 0.1; } 100% { transform: translateX(20px) translateY(-10px); opacity: 0.06; } }
+        .film-grain { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; z-index: 9998; pointer-events: none; opacity: 0.04; animation: grainShift 0.5s steps(4) infinite; }
+        @keyframes grainShift { 0% { transform: translate(0,0); } 25% { transform: translate(-2%,-2%); } 50% { transform: translate(2%,2%); } 75% { transform: translate(-1%,1%); } 100% { transform: translate(1%,-1%); } }
+
+        /* Nav */
+        .nav { position: fixed; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; background: rgba(3,0,20,0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 1000; transition: transform 0.3s ease; }
+        .nav.hidden { transform: translateY(-100%); }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: 0.05em; transition: all 0.3s; display: inline-block; }
+        .nav-logo:hover { transform: perspective(200px) rotateY(15deg); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-link { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%) scale(0); width: 4px; height: 4px; background: #8b5cf6; border-radius: 50%; transition: transform 0.2s; }
+        .nav-link:hover::after { transform: translateX(-50%) scale(1); }
+        .nav-link:hover { color: rgba(255,255,255,0.9); }
+        .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+        .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.7); transition: all 0.3s; }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+        .nav-overlay { position: fixed; inset: 0; background: rgba(3,0,20,0.97); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .nav-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-overlay-link { font-family: 'Playfair Display', serif; font-size: 2rem; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+        .nav-overlay-link:hover { color: #fff; }
+        @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } .nav { padding: 0 1.5rem; } }
+
+        /* Theme Toggle */
+        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; transition: all 0.3s; margin-right: 0.5rem; }
+        .theme-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+        /* Page entry */
+        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
+        body { animation: pageIn 0.6s ease forwards; }
+
+        /* Content */
+        .content { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 2rem 2rem; text-align: center; }
+
+        /* Black Hole Canvas */
+        #blackHole { display: block; margin: 0 auto 2rem; }
+
+        /* Typography */
+        .error-code { font-family: 'Inter', sans-serif; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1.5rem; }
+        .error-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 4rem); font-weight: 700; line-height: 1.2; background: linear-gradient(135deg, #8b5cf6, #06b6d4, #f43f5e); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientCycle 6s ease-in-out infinite; margin-bottom: 1rem; }
+        @keyframes gradientCycle { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .error-subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(0.9rem, 2vw, 1.2rem); color: rgba(255,255,255,0.4); margin-bottom: 2.5rem; }
+        .cta-btn { display: inline-block; padding: 0.8rem 2rem; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 40px; color: #fff; text-decoration: none; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; transition: all 0.3s; margin-bottom: 1.5rem; }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(99,102,241,0.4); }
+        .error-small { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <a href="index.html" class="nav-logo">ÆTHER</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+            <a href="lab.html" class="nav-link">Lab</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="nav-overlay" id="navOverlay">
+        <a href="index.html" class="nav-overlay-link">Home</a>
+        <a href="about.html" class="nav-overlay-link">About</a>
+        <a href="gallery.html" class="nav-overlay-link">Gallery</a>
+        <a href="contact.html" class="nav-overlay-link">Contact</a>
+        <a href="lab.html" class="nav-overlay-link">Lab</a>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Background -->
+    <canvas id="starfield"></canvas>
+    <div class="nebula"></div><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div>
+    <div class="aurora"></div>
+    <svg class="film-grain" xmlns="http://www.w3.org/2000/svg"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+
+    <div class="content">
+        <canvas id="blackHole" width="360" height="360"></canvas>
+        <p class="error-code">Error 404 — Page not found</p>
+        <h1 class="error-title">You've crossed the<br>event horizon</h1>
+        <p class="error-subtitle">This page has been consumed by the void</p>
+        <a href="index.html" class="cta-btn">Return to Observable Space</a>
+        <p class="error-small">Error 404 — Page not found</p>
+    </div>
+
+    <script>
+        /* ── Theme Toggle ── */
+        (function() {
+            const btn = document.getElementById('themeToggle');
+            const saved = localStorage.getItem('aether-theme') || 'night';
+            document.documentElement.setAttribute('data-theme', saved);
+            btn.textContent = saved === 'night' ? '🌙' : '☀️';
+            btn.addEventListener('click', function() {
+                const cur = document.documentElement.getAttribute('data-theme') || 'night';
+                const next = cur === 'night' ? 'day' : 'night';
+                document.documentElement.setAttribute('data-theme', next);
+                btn.textContent = next === 'night' ? '🌙' : '☀️';
+                localStorage.setItem('aether-theme', next);
+            });
+        })();
+
+        /* ── Starfield ── */
+        (function() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            resize(); window.addEventListener('resize', resize);
+            const stars = Array.from({length: 200}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.2, a: Math.random(), speed: Math.random() * 0.5 + 0.1 }));
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => { s.a += s.speed * 0.01; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(226,232,240,' + (0.3 + 0.7 * Math.abs(Math.sin(s.a))) + ')'; ctx.fill(); });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        /* ── Cursor ── */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            const dot = document.getElementById('cursorDot');
+            const ring = document.getElementById('cursorRing');
+            const glow = document.getElementById('cursorGlow');
+            let mx = -100, my = -100, rx = -100, ry = -100;
+            document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+            function follow() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; glow.style.left = rx + 'px'; glow.style.top = ry + 'px'; requestAnimationFrame(follow); }
+            follow();
+            document.querySelectorAll('a').forEach(el => { el.addEventListener('mouseenter', () => ring.classList.add('hover-link')); el.addEventListener('mouseleave', () => ring.classList.remove('hover-link')); });
+        })();
+
+        /* ── Nav ── */
+        (function() {
+            const nav = document.getElementById('mainNav');
+            const ham = document.getElementById('navHamburger');
+            const ov = document.getElementById('navOverlay');
+            let last = 0;
+            window.addEventListener('scroll', function() { const cur = window.pageYOffset; nav.classList.toggle('hidden', cur > last && cur > 80); last = cur; });
+            ham.addEventListener('click', () => { ham.classList.toggle('open'); ov.classList.toggle('open'); });
+            ov.querySelectorAll('.nav-overlay-link').forEach(l => l.addEventListener('click', () => { ham.classList.remove('open'); ov.classList.remove('open'); }));
+        })();
+
+        /* ── Page Transitions ── */
+        (function() {
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+                link.addEventListener('click', function(e) {
+                    if (e.metaKey || e.ctrlKey) return;
+                    e.preventDefault();
+                    if ('startViewTransition' in document) {
+                        document.startViewTransition(() => { window.location.href = href; });
+                    } else {
+                        document.body.style.opacity = '0';
+                        document.body.style.transition = 'opacity 0.3s ease';
+                        setTimeout(() => { window.location.href = href; }, 300);
+                    }
+                });
+            });
+        })();
+
+        /* ── Black Hole Animation ── */
+        (function() {
+            const canvas = document.getElementById('blackHole');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const cx = W / 2, cy = H / 2;
+            const BH_RADIUS = 40;
+            const DISK_RADIUS = 100;
+
+            const particles = [];
+            for (let i = 0; i < 300; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const dist = BH_RADIUS + Math.random() * (W / 2 - BH_RADIUS);
+                particles.push({
+                    x: cx + Math.cos(angle) * dist,
+                    y: cy + Math.sin(angle) * dist,
+                    vx: 0, vy: 0,
+                    mass: Math.random() * 0.5 + 0.1,
+                    hue: [260, 280, 190, 350, 45][Math.floor(Math.random() * 5)],
+                    size: Math.random() * 2 + 0.5,
+                    orbit: dist < DISK_RADIUS * 1.2,
+                    angle: angle,
+                    orbitR: dist,
+                    orbitSpeed: (0.3 + Math.random() * 0.5) * (dist < DISK_RADIUS ? 2 : 0.5) * (Math.random() < 0.5 ? 1 : -1),
+                });
+            }
+
+            let t = 0;
+            function draw() {
+                requestAnimationFrame(draw);
+                ctx.fillStyle = 'rgba(3,0,20,0.15)';
+                ctx.fillRect(0, 0, W, H);
+                t += 0.016;
+
+                // Draw lensing ring
+                const gradient = ctx.createRadialGradient(cx, cy, BH_RADIUS * 0.8, cx, cy, DISK_RADIUS * 1.5);
+                gradient.addColorStop(0, 'rgba(0,0,0,0)');
+                gradient.addColorStop(0.3, 'rgba(139,92,246,0.05)');
+                gradient.addColorStop(0.6, 'rgba(99,102,241,0.1)');
+                gradient.addColorStop(0.8, 'rgba(6,182,212,0.05)');
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.beginPath();
+                ctx.arc(cx, cy, DISK_RADIUS * 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // Accretion disk glow
+                for (let a = 0; a < Math.PI * 2; a += 0.05) {
+                    const diskX = cx + Math.cos(a + t * 0.5) * DISK_RADIUS;
+                    const diskY = cy + Math.sin(a + t * 0.5) * DISK_RADIUS * 0.3;
+                    const alpha = 0.3 + 0.2 * Math.sin(a * 3 + t);
+                    ctx.beginPath();
+                    ctx.arc(diskX, diskY, 3, 0, Math.PI * 2);
+                    const hue = 20 + 40 * Math.sin(a + t);
+                    ctx.fillStyle = 'hsla(' + hue + ',100%,70%,' + alpha + ')';
+                    ctx.fill();
+                }
+
+                // Particles
+                particles.forEach(p => {
+                    const dx = cx - p.x, dy = cy - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < BH_RADIUS * 0.8) {
+                        // Reset particle
+                        const angle = Math.random() * Math.PI * 2;
+                        const r = DISK_RADIUS + Math.random() * (W / 2 - DISK_RADIUS);
+                        p.x = cx + Math.cos(angle) * r;
+                        p.y = cy + Math.sin(angle) * r;
+                        p.vx = 0; p.vy = 0;
+                        p.orbitR = r; p.angle = angle;
+                        return;
+                    }
+
+                    const pull = (4000 * p.mass) / (dist * dist);
+                    p.vx += (dx / dist) * pull * 0.016;
+                    p.vy += (dy / dist) * pull * 0.016;
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    const alpha = Math.min(1, dist / (W / 2));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'hsla(' + p.hue + ',80%,70%,' + alpha + ')';
+                    ctx.fill();
+                });
+
+                // Event horizon (black circle)
+                const ehGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, BH_RADIUS);
+                ehGrad.addColorStop(0, '#000');
+                ehGrad.addColorStop(0.7, '#000');
+                ehGrad.addColorStop(1, 'rgba(139,92,246,0.6)');
+                ctx.beginPath();
+                ctx.arc(cx, cy, BH_RADIUS, 0, Math.PI * 2);
+                ctx.fillStyle = ehGrad;
+                ctx.fill();
+
+                // Lensing distortion ring
+                ctx.beginPath();
+                ctx.arc(cx, cy, BH_RADIUS + 8, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(139,92,246,0.4)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(cx, cy, BH_RADIUS + 15, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(6,182,212,0.2)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            draw();
+        })();
+
+        /* ── PWA ── */
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>
