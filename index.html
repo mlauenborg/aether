@@ -159,7 +159,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2rem;
+            padding: calc(64px + 2rem) 2rem 2rem;
         }
 
         .hero-overline {
@@ -524,9 +524,162 @@
             background: rgba(99, 102, 241, 0.3);
             color: #fff;
         }
+
+        /* ── Navigation Bar ──────────────────────────────────── */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 64px;
+            background: rgba(3, 0, 20, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transform: translateY(0);
+            transition: transform 0.4s ease;
+        }
+        .nav.hidden { transform: translateY(-100%); }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: none;
+            letter-spacing: 0.02em;
+        }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            cursor: none;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link:hover { color: rgba(255,255,255,0.9); }
+        .nav-link.active { color: #fff; }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #6366f1, #06b6d4);
+        }
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: rgba(255,255,255,0.6);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8999;
+            background: rgba(3, 0, 20, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .nav-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-overlay-link {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 7vw, 2.8rem);
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-overlay-link:hover, .nav-overlay-link.active { color: #fff; }
+
+        @media (pointer: coarse) {
+            .nav-logo, .nav-link { cursor: pointer; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav { padding: 0 1.5rem; }
+        }
+
+        /* ── Footer Nav ──────────────────────────────────────── */
+        .footer-nav {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+            text-decoration: none;
+            cursor: none;
+            transition: color 0.3s;
+            letter-spacing: 0.05em;
+        }
+        .footer-nav-link:hover { color: rgba(255,255,255,0.7); }
+        @media (pointer: coarse) { .footer-nav-link { cursor: pointer; } }
+
+        /* ── Page Load ───────────────────────────────────────── */
+        @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+        body { animation: pageIn 0.6s ease forwards; }
     </style>
 </head>
 <body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <a href="index.html" class="nav-logo">ÆTHER</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <!-- Mobile Nav Overlay -->
+    <div class="nav-overlay" id="navOverlay">
+        <a href="index.html" class="nav-overlay-link active">Home</a>
+        <a href="about.html" class="nav-overlay-link">About</a>
+        <a href="gallery.html" class="nav-overlay-link">Gallery</a>
+        <a href="contact.html" class="nav-overlay-link">Contact</a>
+    </div>
 
     <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursorDot"></div>
@@ -638,6 +791,12 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-logo">ÆTHER</div>
+            <nav class="footer-nav">
+                <a href="index.html" class="footer-nav-link">Home</a>
+                <a href="about.html" class="footer-nav-link">About</a>
+                <a href="gallery.html" class="footer-nav-link">Gallery</a>
+                <a href="contact.html" class="footer-nav-link">Contact</a>
+            </nav>
             <p class="footer-tagline">Zero images. Zero frameworks. Pure code.</p>
         </footer>
 
@@ -813,7 +972,7 @@
             followCursor();
 
             // Hover state on interactive elements
-            const interactives = document.querySelectorAll('a, button, .bento-card, .hero-cta');
+            const interactives = document.querySelectorAll('a, button, .bento-card, .hero-cta, .gallery-card, .connect-card');
             interactives.forEach(function (el) {
                 el.addEventListener('mouseenter', function () { ring.classList.add('hover'); });
                 el.addEventListener('mouseleave', function () { ring.classList.remove('hover'); });
@@ -855,6 +1014,38 @@
             }, { threshold: 0.15 });
 
             reveals.forEach(function (el) { observer.observe(el); });
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           NAVIGATION
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const nav = document.getElementById('mainNav');
+            const hamburger = document.getElementById('navHamburger');
+            const overlay = document.getElementById('navOverlay');
+            let lastScrollY = 0;
+
+            window.addEventListener('scroll', function () {
+                const current = window.pageYOffset;
+                if (current > lastScrollY && current > 80) {
+                    nav.classList.add('hidden');
+                } else {
+                    nav.classList.remove('hidden');
+                }
+                lastScrollY = current;
+            });
+
+            hamburger.addEventListener('click', function () {
+                hamburger.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+
+            overlay.querySelectorAll('.nav-overlay-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    hamburger.classList.remove('open');
+                    overlay.classList.remove('open');
+                });
+            });
         })();
     </script>
 </body>
