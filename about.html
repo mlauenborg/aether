@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÆTHER — Experience the Cosmos</title>
-    <meta name="description" content="An interactive cosmic experience built with pure code. Zero images. Zero frameworks. Zero dependencies.">
+    <title>ÆTHER — The Manifesto</title>
+    <meta name="description" content="The philosophy behind ÆTHER. Why we built a cosmic experience from nothing but code.">
     <meta name="theme-color" content="#030014">
-    <meta property="og:title" content="ÆTHER — Experience the Cosmos">
-    <meta property="og:description" content="An interactive cosmic experience built with pure code.">
+    <meta property="og:title" content="ÆTHER — The Manifesto">
+    <meta property="og:description" content="Why we built ÆTHER from nothing but code.">
     <meta property="og:type" content="website">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +29,9 @@
             overflow-x: hidden;
             cursor: none;
         }
+
+        @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+        body { animation: pageIn 0.6s ease forwards; }
 
         @media (pointer: coarse) {
             body { cursor: auto; }
@@ -174,7 +177,7 @@
 
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(4rem, 12vw, 10rem);
+            font-size: clamp(3rem, 10vw, 8rem);
             font-weight: 700;
             line-height: 1;
             background: linear-gradient(135deg, #8b5cf6, #06b6d4, #f43f5e, #8b5cf6);
@@ -198,34 +201,6 @@
             color: rgba(255, 255, 255, 0.5);
             margin-bottom: 2.5rem;
             font-weight: 400;
-        }
-
-        .hero-cta {
-            display: inline-block;
-            padding: 0.9rem 2.5rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: #e2e8f0;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 999px;
-            cursor: none;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            position: relative;
-        }
-
-        @media (pointer: coarse) {
-            .hero-cta { cursor: pointer; }
-        }
-
-        .hero-cta:hover {
-            border-color: rgba(99, 102, 241, 0.6);
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3), inset 0 0 30px rgba(99, 102, 241, 0.05);
-            color: #fff;
         }
 
         .scroll-indicator {
@@ -265,200 +240,9 @@
             transform: translateY(0);
         }
 
-        /* ── Orb Section ─────────────────────────────────────── */
-        .orb-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 6rem 2rem;
-            gap: 4rem;
-        }
-
-        .orb-container {
-            position: relative;
-            width: clamp(200px, 30vw, 320px);
-            height: clamp(200px, 30vw, 320px);
-            perspective: 600px;
-        }
-
-        .orb {
-            width: 100%;
-            height: 100%;
-            border-radius: 42% 58% 63% 37% / 45% 55% 45% 55%;
-            background: radial-gradient(circle at 35% 35%, #8b5cf6, #06b6d4 50%, #f43f5e 100%);
-            animation: morph 8s ease-in-out infinite;
-            position: relative;
-            transition: transform 0.15s ease-out;
-        }
-
-        @keyframes morph {
-            0%, 100% { border-radius: 42% 58% 63% 37% / 45% 55% 45% 55%; }
-            25% { border-radius: 55% 45% 38% 62% / 60% 40% 60% 40%; }
-            50% { border-radius: 38% 62% 55% 45% / 40% 60% 35% 65%; }
-            75% { border-radius: 62% 38% 45% 55% / 55% 45% 62% 38%; }
-        }
-
-        .orb-ring {
-            position: absolute;
-            top: 50%; left: 50%;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transform: translate(-50%, -50%);
-            animation: morph 8s ease-in-out infinite;
-        }
-
-        .orb-ring:nth-child(2) { width: 130%; height: 130%; animation-delay: -1s; }
-        .orb-ring:nth-child(3) { width: 160%; height: 160%; animation-delay: -2s; }
-        .orb-ring:nth-child(4) { width: 190%; height: 190%; animation-delay: -3s; }
-
-        .orb-text {
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .orb-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            margin-bottom: 1rem;
-            color: #e2e8f0;
-        }
-
-        .orb-text h2 em {
-            font-style: italic;
-            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .orb-text p {
-            font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.45);
-            font-weight: 300;
-        }
-
-        /* ── Bento Grid Section ──────────────────────────────── */
-        .bento-section {
-            padding: 6rem 2rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .bento-section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            text-align: center;
-            margin-bottom: 3rem;
-            color: #e2e8f0;
-        }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .bento-card {
-            position: relative;
-            padding: 2rem;
-            border-radius: 1.2rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .bento-card:hover {
-            transform: translateY(-4px);
-        }
-
-        /* Animated gradient border on hover */
-        .bento-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 1.2rem;
-            padding: 1px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #f43f5e, #6366f1);
-            background-size: 300% 300%;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            animation: gradientCycle 4s ease-in-out infinite;
-        }
-
-        .bento-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Glow blobs */
-        .bento-card .glow {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            filter: blur(50px);
-            opacity: 0.15;
-            z-index: 0;
-        }
-
-        .bento-card:nth-child(1) .glow { background: #6366f1; top: -30px; right: -30px; }
-        .bento-card:nth-child(2) .glow { background: #06b6d4; bottom: -30px; left: -30px; }
-        .bento-card:nth-child(3) .glow { background: #f43f5e; top: -30px; left: -30px; }
-        .bento-card:nth-child(4) .glow { background: #8b5cf6; bottom: -30px; right: -30px; }
-        .bento-card:nth-child(5) .glow { background: #f59e0b; top: -30px; right: -30px; }
-        .bento-card:nth-child(6) .glow { background: #06b6d4; bottom: -30px; left: -30px; }
-
-        .bento-card:nth-child(1),
-        .bento-card:nth-child(4) {
-            grid-column: span 2;
-        }
-
-        .bento-card .icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .bento-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            margin-bottom: 0.6rem;
-            color: #e2e8f0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .bento-card p {
-            font-size: 0.88rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .bento-grid {
-                grid-template-columns: 1fr;
-            }
-            .bento-card:nth-child(1),
-            .bento-card:nth-child(4) {
-                grid-column: span 1;
-            }
-        }
-
         /* ── Quote Section ───────────────────────────────────── */
         .quote-section {
-            min-height: 60vh;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -518,6 +302,26 @@
             font-weight: 300;
             letter-spacing: 0.05em;
         }
+
+        /* ── Footer Nav ──────────────────────────────────────── */
+        .footer-nav {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+            text-decoration: none;
+            cursor: none;
+            transition: color 0.3s;
+            letter-spacing: 0.05em;
+        }
+        .footer-nav-link:hover { color: rgba(255,255,255,0.7); }
+        @media (pointer: coarse) { .footer-nav-link { cursor: pointer; } }
 
         /* ── Selection ───────────────────────────────────────── */
         ::selection {
@@ -633,29 +437,208 @@
             .nav { padding: 0 1.5rem; }
         }
 
-        /* ── Footer Nav ──────────────────────────────────────── */
-        .footer-nav {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin: 1rem 0;
-            flex-wrap: wrap;
+        /* ── Philosophy Section ──────────────────────────────── */
+        .philosophy-section {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        .footer-nav-link {
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .section-label {
             font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.3);
-            text-decoration: none;
-            cursor: none;
-            transition: color 0.3s;
-            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(99,102,241,0.8);
+            display: block;
+            margin-bottom: 1rem;
         }
-        .footer-nav-link:hover { color: rgba(255,255,255,0.7); }
-        @media (pointer: coarse) { .footer-nav-link { cursor: pointer; } }
+        .philosophy-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+        }
+        .philosophy-text h2 em {
+            font-style: italic;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .philosophy-text p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.45);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .philosophy-visual {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            aspect-ratio: 1;
+        }
+        #constellationCanvas { width: 100%; height: 100%; display: block; }
+        @media (max-width: 768px) {
+            .philosophy-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .philosophy-visual { aspect-ratio: 4/3; }
+        }
 
-        /* ── Page Load ───────────────────────────────────────── */
-        @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
-        body { animation: pageIn 0.6s ease forwards; }
+        /* ── Timeline Section ────────────────────────────────── */
+        .timeline-section {
+            padding: 6rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .timeline-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(99,102,241,0.4) 10%, rgba(99,102,241,0.4) 90%, transparent);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -2.5rem;
+            top: 1.2rem;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            box-shadow: 0 0 12px rgba(99,102,241,0.6);
+            margin-left: 5px;
+            transform: translateX(-50%);
+        }
+        .timeline-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            position: relative;
+            transition: border-color 0.3s ease;
+        }
+        .timeline-card:hover { border-color: rgba(99,102,241,0.3); }
+        .timeline-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .timeline-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            margin-bottom: 0.4rem;
+        }
+        .timeline-card p {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.4);
+            font-weight: 300;
+        }
+        .timeline-label {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(99,102,241,0.7);
+        }
+
+        /* ── Stats Section ───────────────────────────────────── */
+        .stats-section {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .stats-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .stats-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid .stat-card:nth-child(5) { grid-column: span 2; }
+        }
+        .stat-card {
+            position: relative;
+            padding: 2.5rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 1.2rem;
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-4px); border-color: rgba(99,102,241,0.3); }
+        .stat-glow {
+            position: absolute;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.15;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #6366f1;
+        }
+        .stat-card:nth-child(2) .stat-glow { background: #06b6d4; }
+        .stat-card:nth-child(3) .stat-glow { background: #8b5cf6; }
+        .stat-card:nth-child(4) .stat-glow { background: #f43f5e; }
+        .stat-card:nth-child(5) .stat-glow { background: #f59e0b; }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: #e2e8f0;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -664,8 +647,8 @@
     <nav class="nav" id="mainNav">
         <a href="index.html" class="nav-logo">ÆTHER</a>
         <div class="nav-links">
-            <a href="index.html" class="nav-link active">Home</a>
-            <a href="about.html" class="nav-link">About</a>
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link active">About</a>
             <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="contact.html" class="nav-link">Contact</a>
         </div>
@@ -675,8 +658,8 @@
     </nav>
     <!-- Mobile Nav Overlay -->
     <div class="nav-overlay" id="navOverlay">
-        <a href="index.html" class="nav-overlay-link active">Home</a>
-        <a href="about.html" class="nav-overlay-link">About</a>
+        <a href="index.html" class="nav-overlay-link">Home</a>
+        <a href="about.html" class="nav-overlay-link active">About</a>
         <a href="gallery.html" class="nav-overlay-link">Gallery</a>
         <a href="contact.html" class="nav-overlay-link">Contact</a>
     </div>
@@ -712,69 +695,126 @@
 
         <!-- Hero Section -->
         <section class="hero">
-            <span class="hero-overline reveal">Beyond the Horizon</span>
-            <h1 class="hero-title reveal">ÆTHER</h1>
-            <p class="hero-subtitle reveal">Where light bends and time dissolves</p>
-            <a href="#orb" class="hero-cta reveal">Explore the Unknown</a>
+            <span class="hero-overline reveal">Est. 2024</span>
+            <h1 class="hero-title reveal">The Manifesto</h1>
+            <p class="hero-subtitle reveal">Why we built ÆTHER from nothing but code</p>
             <div class="scroll-indicator">
                 <span>Scroll</span>
                 <div class="line"></div>
             </div>
         </section>
 
-        <!-- Orb Section -->
-        <section class="orb-section" id="orb">
-            <div class="orb-container reveal" id="orbContainer">
-                <div class="orb" id="orb-element"></div>
-                <div class="orb-ring"></div>
-                <div class="orb-ring"></div>
-                <div class="orb-ring"></div>
-            </div>
-            <div class="orb-text reveal">
-                <h2>Built from <em>pure light</em></h2>
-                <p>Every star, every glow, every grain of noise — generated in real time. No images. No frameworks. No libraries. Just mathematics, canvas, and CSS painting directly onto your screen.</p>
+        <!-- Philosophy Section -->
+        <section class="philosophy-section">
+            <div class="philosophy-grid">
+                <div class="philosophy-text reveal">
+                    <span class="section-label">Philosophy</span>
+                    <h2>No shortcuts.<br><em>No compromises.</em></h2>
+                    <p>We believe the web has forgotten what it's capable of. Every framework adds weight. Every image is a crutch. Every dependency is a chain.</p>
+                    <p>ÆTHER is a rebellion. A proof that beauty doesn't require tools — only intention. Every star is a mathematical point. Every glow is a gradient function. Every shimmer is a sine wave.</p>
+                    <p>When you strip away the scaffolding, something strange happens: you start to see clearly. The code becomes art. The browser becomes a canvas. The screen becomes a window to something almost alive.</p>
+                </div>
+                <div class="philosophy-visual reveal">
+                    <canvas id="constellationCanvas"></canvas>
+                </div>
             </div>
         </section>
 
-        <!-- Bento Grid Section -->
-        <section class="bento-section">
-            <h2 class="reveal">Crafted with Intention</h2>
-            <div class="bento-grid">
-                <div class="bento-card reveal">
-                    <div class="glow"></div>
-                    <div class="icon">🌌</div>
-                    <h3>Procedural Starfield</h3>
-                    <p>Three depth layers of stars rendered on canvas, each twinkling independently with sine-wave oscillation. Colored giant stars pulse in blue and red hues across the deep field.</p>
+        <!-- Timeline Section -->
+        <section class="timeline-section">
+            <div class="timeline-header reveal">
+                <span class="section-label">Creation Story</span>
+                <h2>The Birth of a Universe</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">💥</div>
+                        <h3>The Big Bang</h3>
+                        <p>Project conceived. A single blank HTML file. The void stares back.</p>
+                        <span class="timeline-label">Origin</span>
+                    </div>
                 </div>
-                <div class="bento-card reveal">
-                    <div class="glow"></div>
-                    <div class="icon">🌈</div>
-                    <h3>Living Aurora</h3>
-                    <p>Multi-color radial gradients drift and breathe across the viewport, simulating atmospheric light phenomena from far-off worlds.</p>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">✨</div>
+                        <h3>First Light</h3>
+                        <p>The starfield renders. 600 points of light bloom across a canvas for the first time.</p>
+                        <span class="timeline-label">Iteration I</span>
+                    </div>
                 </div>
-                <div class="bento-card reveal">
-                    <div class="glow"></div>
-                    <div class="icon">✨</div>
-                    <h3>Fluid Cursor</h3>
-                    <p>A three-layer custom cursor system — dot, ring, and radial glow — follows your movement with smooth interpolation and reacts to interactive elements.</p>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">🌌</div>
+                        <h3>Nebula Formation</h3>
+                        <p>Colors arrive. Gradients bloom. The aurora breathes across the viewport like a living thing.</p>
+                        <span class="timeline-label">Iteration II</span>
+                    </div>
                 </div>
-                <div class="bento-card reveal">
-                    <div class="glow"></div>
-                    <div class="icon">🔮</div>
-                    <h3>Morphing Geometry</h3>
-                    <p>An organic orb continuously morphs its shape through keyframe-animated border-radius values, surrounded by concentric ring borders. Mouse proximity triggers 3D perspective tilt for an immersive parallax effect.</p>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">🔮</div>
+                        <h3>Orbital Mechanics</h3>
+                        <p>The morphing orb materialises. Concentric rings orbit it in an eternal elliptical dance.</p>
+                        <span class="timeline-label">Iteration III</span>
+                    </div>
                 </div>
-                <div class="bento-card reveal">
-                    <div class="glow"></div>
-                    <div class="icon">🎞️</div>
-                    <h3>Film Grain &amp; Cinematic Feel</h3>
-                    <p>An animated SVG noise texture overlays the entire viewport, adding a subtle analog film quality that ties all the digital elements together.</p>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">👁️</div>
+                        <h3>Sentience</h3>
+                        <p>The cursor system awakens. The experience gains eyes, tracking every movement.</p>
+                        <span class="timeline-label">Iteration IV</span>
+                    </div>
                 </div>
-                <div class="bento-card reveal">
-                    <div class="glow"></div>
-                    <div class="icon">☄️</div>
-                    <h3>Shooting Stars</h3>
-                    <p>Randomly spawning meteors streak across the canvas with glowing gradient trails that fade as they burn through the atmosphere.</p>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">🌐</div>
+                        <h3>The Observable Universe</h3>
+                        <p>Full experience deployed. The cosmos is now accessible to anyone with a browser.</p>
+                        <span class="timeline-label">Deployed</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-header reveal">
+                <span class="section-label">By the Numbers</span>
+                <h2>The Zero Equation</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card reveal" data-target="0">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Images</div>
+                </div>
+                <div class="stat-card reveal" data-target="0">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Dependencies</div>
+                </div>
+                <div class="stat-card reveal" data-target="4">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number" data-count="4">4</div>
+                    <div class="stat-label">Pages</div>
+                </div>
+                <div class="stat-card reveal" data-special="∞">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Stars</div>
+                </div>
+                <div class="stat-card reveal" data-prefix="&lt; " data-target="35" data-suffix="KB">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">&lt; 35KB</div>
+                    <div class="stat-label">Gzipped</div>
                 </div>
             </div>
         </section>
@@ -783,9 +823,9 @@
         <section class="quote-section">
             <hr class="quote-line reveal">
             <blockquote class="quote-text reveal">
-                &ldquo;The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself.&rdquo;
+                &ldquo;If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.&rdquo;
             </blockquote>
-            <cite class="quote-cite reveal">— Carl Sagan</cite>
+            <cite class="quote-cite reveal">— Nikola Tesla</cite>
         </section>
 
         <!-- Footer -->
@@ -819,9 +859,8 @@
             resize();
             window.addEventListener('resize', resize);
 
-            // Stars
             const layerCounts = isMobile ? [200, 100, 50] : [600, 300, 120];
-            const layerSpeeds = [0.02, 0.05, 0.1]; // parallax multiplier
+            const layerSpeeds = [0.02, 0.05, 0.1];
             const stars = [];
 
             for (let layer = 0; layer < 3; layer++) {
@@ -829,7 +868,7 @@
                     const isGiant = Math.random() < 0.15;
                     stars.push({
                         x: Math.random() * W,
-                        y: Math.random() * H * 3, // extend beyond viewport for scroll
+                        y: Math.random() * H * 3,
                         baseRadius: isGiant ? (1.2 + Math.random() * 1.5) : (0.3 + Math.random() * (layer * 0.4 + 0.3)),
                         layer: layer,
                         twinkleSpeed: 0.5 + Math.random() * 2,
@@ -841,7 +880,6 @@
                 }
             }
 
-            // Shooting stars
             const shootingStars = [];
 
             function spawnShootingStar() {
@@ -866,7 +904,6 @@
                 ctx.clearRect(0, 0, W, H);
                 time += 0.016;
 
-                // Draw stars
                 for (const star of stars) {
                     const parallaxY = star.y - scrollY * layerSpeeds[star.layer];
                     const wrappedY = ((parallaxY % (H * 3)) + H * 3) % (H * 3) - H;
@@ -881,7 +918,6 @@
                         ctx.arc(star.x, wrappedY, radius, 0, Math.PI * 2);
                         ctx.fillStyle = 'hsla(' + star.hue + ', ' + star.saturation + '%, 75%, ' + alpha + ')';
                         ctx.fill();
-                        // Soft glow
                         ctx.beginPath();
                         ctx.arc(star.x, wrappedY, radius * 3, 0, Math.PI * 2);
                         ctx.fillStyle = 'hsla(' + star.hue + ', ' + star.saturation + '%, 75%, ' + (alpha * 0.1) + ')';
@@ -894,7 +930,6 @@
                     }
                 }
 
-                // Shooting stars
                 if (Math.random() < 0.005) spawnShootingStar();
 
                 for (let i = shootingStars.length - 1; i >= 0; i--) {
@@ -903,14 +938,10 @@
                     s.y += s.vy;
                     s.life -= s.decay;
 
-                    if (s.life <= 0) {
-                        shootingStars.splice(i, 1);
-                        continue;
-                    }
+                    if (s.life <= 0) { shootingStars.splice(i, 1); continue; }
 
                     const tailX = s.x - s.vx * (s.length / 6);
                     const tailY = s.y - s.vy * (s.length / 6);
-
                     const gradient = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
                     gradient.addColorStop(0, 'rgba(226, 232, 240, 0)');
                     gradient.addColorStop(1, 'rgba(226, 232, 240, ' + s.life + ')');
@@ -922,7 +953,6 @@
                     ctx.lineWidth = 1.5;
                     ctx.stroke();
 
-                    // Head glow
                     ctx.beginPath();
                     ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
                     ctx.fillStyle = 'rgba(226, 232, 240, ' + s.life + ')';
@@ -955,7 +985,6 @@
                 dot.style.top = mouseY + 'px';
             });
 
-            // Smooth follow for ring & glow
             function followCursor() {
                 ringX += (mouseX - ringX) * 0.15;
                 ringY += (mouseY - ringY) * 0.15;
@@ -971,31 +1000,10 @@
             }
             followCursor();
 
-            // Hover state on interactive elements
-            const interactives = document.querySelectorAll('a, button, .bento-card, .hero-cta, .gallery-card, .connect-card');
+            const interactives = document.querySelectorAll('a, button, .bento-card, .hero-cta, .gallery-card, .connect-card, .timeline-card, .stat-card');
             interactives.forEach(function (el) {
                 el.addEventListener('mouseenter', function () { ring.classList.add('hover'); });
                 el.addEventListener('mouseleave', function () { ring.classList.remove('hover'); });
-            });
-        })();
-
-        /* ─────────────────────────────────────────────────────
-           ORB 3D TILT
-           ───────────────────────────────────────────────────── */
-        (function () {
-            const container = document.getElementById('orbContainer');
-            const orbEl = document.getElementById('orb-element');
-            if (!container || !orbEl) return;
-
-            container.addEventListener('mousemove', function (e) {
-                const rect = container.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                orbEl.style.transform = 'rotateY(' + (x * 20) + 'deg) rotateX(' + (-y * 20) + 'deg)';
-            });
-
-            container.addEventListener('mouseleave', function () {
-                orbEl.style.transform = 'rotateY(0deg) rotateX(0deg)';
             });
         })();
 
@@ -1046,6 +1054,116 @@
                     overlay.classList.remove('open');
                 });
             });
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           CONSTELLATION CANVAS
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const canvas = document.getElementById('constellationCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let W, H;
+
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                W = canvas.width = rect.width;
+                H = canvas.height = rect.height;
+            }
+            resize();
+
+            const resizeObs = new ResizeObserver(resize);
+            resizeObs.observe(canvas.parentElement);
+
+            const points = [];
+            const COUNT = 60;
+            for (let i = 0; i < COUNT; i++) {
+                points.push({
+                    x: Math.random(),
+                    y: Math.random(),
+                    vx: (Math.random() - 0.5) * 0.0003,
+                    vy: (Math.random() - 0.5) * 0.0003,
+                });
+            }
+
+            let running = true;
+            function draw() {
+                if (!running) return;
+                ctx.clearRect(0, 0, W, H);
+
+                for (const p of points) {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > 1) p.vx *= -1;
+                    if (p.y < 0 || p.y > 1) p.vy *= -1;
+                }
+
+                for (let i = 0; i < points.length; i++) {
+                    for (let j = i + 1; j < points.length; j++) {
+                        const dx = (points[i].x - points[j].x) * W;
+                        const dy = (points[i].y - points[j].y) * H;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(points[i].x * W, points[i].y * H);
+                            ctx.lineTo(points[j].x * W, points[j].y * H);
+                            ctx.strokeStyle = 'rgba(99,102,241,' + (1 - dist / 120) * 0.35 + ')';
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                for (const p of points) {
+                    ctx.beginPath();
+                    ctx.arc(p.x * W, p.y * H, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(139,92,246,0.7)';
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            const obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    running = e.isIntersecting;
+                    if (running) draw();
+                });
+            }, { threshold: 0.1 });
+            obs.observe(canvas.parentElement);
+            draw();
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           STATS COUNTERS
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const cards = document.querySelectorAll('.stat-card[data-target]');
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    const card = entry.target;
+                    const target = parseInt(card.dataset.target);
+                    const prefix = card.dataset.prefix || '';
+                    const suffix = card.dataset.suffix || '';
+                    const el = card.querySelector('.stat-number');
+                    if (!el || target === 0) {
+                        if (el) el.textContent = prefix + '0' + suffix;
+                        observer.unobserve(card);
+                        return;
+                    }
+                    let start = 0;
+                    const duration = 1500;
+                    const step = 16;
+                    const increment = target / (duration / step);
+                    const timer = setInterval(function () {
+                        start = Math.min(start + increment, target);
+                        el.textContent = prefix + Math.floor(start) + suffix;
+                        if (start >= target) clearInterval(timer);
+                    }, step);
+                    observer.unobserve(card);
+                });
+            }, { threshold: 0.3 });
+            cards.forEach(function (c) { observer.observe(c); });
         })();
     </script>
 </body>

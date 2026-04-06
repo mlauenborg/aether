@@ -2,7 +2,7 @@
 
 An interactive cosmic experience built with pure code.
 
-**Zero images. Zero frameworks. Zero dependencies. One file.**
+**Zero images. Zero frameworks. Zero dependencies.**
 
 ## 🌌 Live Demo
 
@@ -19,18 +19,23 @@ An interactive cosmic experience built with pure code.
 - 📜 Scroll-triggered reveal animations via IntersectionObserver
 - 📱 Fully responsive — optimized star counts and cursor on mobile
 - 🎨 Glassmorphism bento grid with animated gradient borders
+- 🧭 Auto-hiding glassmorphism navigation bar across all pages
+- 🎨 Gallery of 6 live generative art canvas experiments
+- 📡 Interactive particle playground
+- 📬 Contact form with cosmic particle burst animation
 
 ## 🛠 Tech
 
-Everything is contained in a single `index.html` file:
+Every page is self-contained — all CSS and JS inline, no shared external files:
 
-- **Canvas API** — procedural starfield and shooting stars
+- **Canvas API** — procedural starfield, generative art, signal animations
 - **CSS animations** — morphing orb, aurora drift, nebula float, film grain
 - **SVG filters** — fractal noise for film grain texture
-- **IntersectionObserver** — scroll-triggered reveal animations
+- **IntersectionObserver** — scroll-triggered reveals and canvas pause/resume
+- **Web Animations API** — particle burst on form submit
 - **Google Fonts** — Inter + Playfair Display
 
-No build step. No dependencies. No bundler. Just open the file.
+No build step. No dependencies. No bundler. Just open any file.
 
 ## 🚀 Deploy
 
@@ -41,14 +46,17 @@ This site is designed for **GitHub Pages**:
 3. Select the **main** branch and **/ (root)** folder
 4. Save — your site will be live at `https://<username>.github.io/aether/`
 
-Or simply open `index.html` in any browser.
+Or simply open any HTML file in a browser.
 
 ## 📁 Structure
 
 ```
 aether/
-├── index.html   ← The entire experience
-└── README.md    ← You are here
+├── index.html     ← Home — The cosmic experience
+├── about.html     ← The Manifesto — Philosophy & story
+├── gallery.html   ← Cosmic Gallery — Generative art experiments
+├── contact.html   ← Transmit — Contact form with cosmic theming
+└── README.md      ← Documentation
 ```
 
 ## 🎨 Color Palette
