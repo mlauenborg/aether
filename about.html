@@ -639,9 +639,57 @@
             position: relative;
             z-index: 1;
         }
+        /* ── Scroll Progress ── */
+        #scrollProgress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4,#f43f5e); z-index: 9999; transition: width 0.1s linear; pointer-events: none; }
+
+        /* ── Theme Toggle ── */
+        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; margin-right: 0.5rem; transition: all 0.3s; }
+        .theme-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+        /* ── Day Theme ── */
+        [data-theme="day"] { --bg: #0c1445; --nebula-opacity: 0.25; }
+        [data-theme="day"] body { background: linear-gradient(135deg, #0c1445, #1a237e); }
+        [data-theme="day"] .nebula:nth-child(1) { background: radial-gradient(circle, #f59e0b, transparent 70%); }
+        [data-theme="day"] .nebula:nth-child(2) { background: radial-gradient(circle, #f97316, transparent 70%); }
+        [data-theme="day"] .nebula:nth-child(3) { background: radial-gradient(circle, #fbbf24, transparent 70%); }
+        [data-theme="day"] .nebula:nth-child(4) { background: radial-gradient(circle, #06b6d4, transparent 70%); }
+        [data-theme="day"] .aurora { background: radial-gradient(ellipse 80% 50% at 20% 40%,#f59e0b,transparent), radial-gradient(ellipse 60% 40% at 70% 60%,#f97316,transparent), radial-gradient(ellipse 70% 50% at 50% 20%,#fbbf24,transparent); }
+
+        /* ── Glitch Logo ── */
+        @keyframes glitch {
+            0%,100% { text-shadow: none; clip-path: none; }
+            20% { text-shadow: -2px 0 #f43f5e, 2px 0 #06b6d4; clip-path: polygon(0 20%,100% 20%,100% 40%,0 40%); }
+            40% { text-shadow: 2px 0 #f43f5e, -2px 0 #06b6d4; clip-path: polygon(0 60%,100% 60%,100% 80%,0 80%); }
+            60% { text-shadow: -2px 2px #8b5cf6, 2px -2px #f43f5e; clip-path: none; }
+        }
+        .nav-logo:hover { animation: glitch 0.3s steps(1) forwards; }
+
+        /* ── Nav Link Dot ── */
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%) scale(0); width: 4px; height: 4px; background: #8b5cf6; border-radius: 50%; transition: transform 0.2s; }
+        .nav-link:hover::after, .nav-link.active::after { transform: translateX(-50%) scale(1); }
+
+        /* ── Cursor Colors ── */
+        .cursor-ring.hover-link { border-color: rgba(99,102,241,0.9) !important; width: 48px !important; height: 48px !important; }
+        .cursor-ring.hover-card { border-color: rgba(6,182,212,0.9) !important; width: 52px !important; height: 52px !important; }
+        .cursor-ring.hover-btn { border-color: rgba(244,63,94,0.9) !important; width: 48px !important; height: 48px !important; }
+        .cursor-particle { position: fixed; pointer-events: none; z-index: 9999; border-radius: 50%; transition: opacity 0.4s; }
+
+        /* ── Magnetic Element ── */
+        .magnetic { transition: transform 0.15s ease; }
+
+        /* ── Enhanced pageIn ── */
+        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
+
+        /* ── Timeline Alternating ── */
+        .timeline-item:nth-child(odd) .timeline-content { transform: translateX(-40px); opacity: 0; transition: transform 0.7s ease, opacity 0.7s ease; }
+        .timeline-item:nth-child(even) .timeline-content { transform: translateX(40px); opacity: 0; transition: transform 0.7s ease, opacity 0.7s ease; }
+        .timeline-item.visible .timeline-content { transform: translateX(0) !important; opacity: 1 !important; }
     </style>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
+<div id="scrollProgress" style="position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4,#f43f5e);z-index:9999;transition:width 0.1s linear;pointer-events:none;"></div>
 
     <!-- Navigation -->
     <nav class="nav" id="mainNav">
@@ -651,7 +699,9 @@
             <a href="about.html" class="nav-link active">About</a>
             <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="contact.html" class="nav-link">Contact</a>
+            <a href="lab.html" class="nav-link">Lab</a>
         </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 10px;color:#fff;cursor:pointer;font-size:1rem;margin-right:0.5rem;transition:all 0.3s;">🌙</button>
         <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
@@ -662,6 +712,7 @@
         <a href="about.html" class="nav-overlay-link active">About</a>
         <a href="gallery.html" class="nav-overlay-link">Gallery</a>
         <a href="contact.html" class="nav-overlay-link">Contact</a>
+        <a href="lab.html" class="nav-overlay-link">Lab</a>
     </div>
 
     <!-- Custom Cursor -->
@@ -836,6 +887,7 @@
                 <a href="about.html" class="footer-nav-link">About</a>
                 <a href="gallery.html" class="footer-nav-link">Gallery</a>
                 <a href="contact.html" class="footer-nav-link">Contact</a>
+                <a href="lab.html" class="footer-nav-link">Lab</a>
             </nav>
             <p class="footer-tagline">Zero images. Zero frameworks. Pure code.</p>
         </footer>
@@ -1164,6 +1216,162 @@
                 });
             }, { threshold: 0.3 });
             cards.forEach(function (c) { observer.observe(c); });
+        })();
+
+        /* ── SCROLL PROGRESS ── */
+        (function() {
+            var bar = document.getElementById('scrollProgress');
+            if (!bar) return;
+            window.addEventListener('scroll', function() {
+                var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+                bar.style.width = Math.min(pct || 0, 100) + '%';
+            });
+        })();
+
+        /* ── THEME TOGGLE ── */
+        (function() {
+            var btn = document.getElementById('themeToggle');
+            if (!btn) return;
+            var saved = localStorage.getItem('aether-theme') || 'night';
+            document.documentElement.setAttribute('data-theme', saved);
+            btn.textContent = saved === 'night' ? '🌙' : '☀️';
+            btn.addEventListener('click', function() {
+                var cur = document.documentElement.getAttribute('data-theme') || 'night';
+                var next = cur === 'night' ? 'day' : 'night';
+                document.documentElement.setAttribute('data-theme', next);
+                btn.textContent = next === 'night' ? '🌙' : '☀️';
+                localStorage.setItem('aether-theme', next);
+            });
+        })();
+
+        /* ── PAGE TRANSITIONS ── */
+        (function() {
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                var href = link.getAttribute('href');
+                if (!href || href.charAt(0) === '#' || href.indexOf('http') === 0 || href.indexOf('mailto') === 0) return;
+                link.addEventListener('click', function(e) {
+                    if (e.metaKey || e.ctrlKey) return;
+                    e.preventDefault();
+                    if ('startViewTransition' in document) {
+                        document.startViewTransition(function() { window.location.href = href; });
+                    } else {
+                        document.body.style.transition = 'opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease';
+                        document.body.style.opacity = '0';
+                        document.body.style.transform = 'scale(0.98)';
+                        document.body.style.filter = 'blur(4px)';
+                        setTimeout(function() { window.location.href = href; }, 300);
+                    }
+                });
+            });
+        })();
+
+        /* ── ENHANCED CURSOR (PARTICLE TRAIL) ── */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            var ring = document.getElementById('cursorRing');
+            if (!ring) return;
+            var PALETTE = ['#6366f1','#8b5cf6','#06b6d4','#f43f5e','#f59e0b'];
+            var particles = [];
+            var mx = -100, my = -100;
+
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX; my = e.clientY;
+                var p = document.createElement('div');
+                p.className = 'cursor-particle';
+                var size = 4 + Math.random() * 4;
+                p.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + mx + 'px;top:' + my + 'px;background:' + PALETTE[Math.floor(Math.random() * PALETTE.length)] + ';transform:translate(-50%,-50%);opacity:0.7;';
+                document.body.appendChild(p);
+                particles.push({ el: p, life: 1 });
+                if (particles.length > 30) {
+                    var old = particles.shift();
+                    if (old.el.parentNode) old.el.parentNode.removeChild(old.el);
+                }
+            });
+
+            setInterval(function() {
+                for (var i = particles.length - 1; i >= 0; i--) {
+                    particles[i].life -= 0.08;
+                    if (particles[i].life <= 0) {
+                        if (particles[i].el.parentNode) particles[i].el.parentNode.removeChild(particles[i].el);
+                        particles.splice(i, 1);
+                    } else {
+                        particles[i].el.style.opacity = particles[i].life * 0.7;
+                        var s = particles[i].life * 4 + 1;
+                        particles[i].el.style.width = s + 'px';
+                        particles[i].el.style.height = s + 'px';
+                    }
+                }
+            }, 50);
+
+            document.querySelectorAll('a, .nav-link').forEach(function(el) {
+                el.addEventListener('mouseenter', function() { ring.classList.add('hover-link'); ring.classList.remove('hover-card','hover-btn'); });
+                el.addEventListener('mouseleave', function() { ring.classList.remove('hover-link','hover-card','hover-btn'); });
+            });
+            document.querySelectorAll('.bento-card, .gallery-card, .connect-card, .card').forEach(function(el) {
+                el.addEventListener('mouseenter', function() { ring.classList.add('hover-card'); ring.classList.remove('hover-link','hover-btn'); });
+                el.addEventListener('mouseleave', function() { ring.classList.remove('hover-link','hover-card','hover-btn'); });
+            });
+            document.querySelectorAll('button, .hero-cta, .cta-btn').forEach(function(el) {
+                el.addEventListener('mouseenter', function() { ring.classList.add('hover-btn'); ring.classList.remove('hover-link','hover-card'); });
+                el.addEventListener('mouseleave', function() { ring.classList.remove('hover-link','hover-card','hover-btn'); });
+            });
+        })();
+
+        /* ── MAGNETIC EFFECT ── */
+        (function() {
+            document.querySelectorAll('.hero-cta, .bento-card, button.submit-btn, .gallery-card').forEach(function(el) {
+                el.classList.add('magnetic');
+                el.addEventListener('mousemove', function(e) {
+                    var rect = el.getBoundingClientRect();
+                    var cx = rect.left + rect.width / 2;
+                    var cy = rect.top + rect.height / 2;
+                    var dx = e.clientX - cx;
+                    var dy = e.clientY - cy;
+                    var dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 80) {
+                        var factor = (1 - dist / 80) * 8;
+                        el.style.transform = 'translate(' + (dx/dist*factor) + 'px,' + (dy/dist*factor) + 'px)';
+                    }
+                });
+                el.addEventListener('mouseleave', function() { el.style.transform = ''; });
+            });
+        })();
+
+        /* ── STAGGERED REVEALS ── */
+        (function() {
+            document.querySelectorAll('.bento-grid, .gallery-grid, .timeline, .stats-grid').forEach(function(container) {
+                var children = container.querySelectorAll('.reveal');
+                children.forEach(function(child, i) {
+                    child.style.transitionDelay = (i * 0.1) + 's';
+                });
+            });
+        })();
+
+        /* ── TYPED TEXT EFFECT ── */
+        (function() {
+            document.querySelectorAll('.hero-subtitle[data-typed]').forEach(function(el) {
+                var text = el.getAttribute('data-typed') || el.textContent;
+                el.textContent = '';
+                el.style.opacity = '1';
+                var i = 0;
+                function type() {
+                    if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 40); }
+                }
+                setTimeout(type, 800);
+            });
+        })();
+
+        /* ── SERVICE WORKER ── */
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(function(){});
+        }
+
+        /* ── TIMELINE ALTERNATING REVEAL ── */
+        (function() {
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+            }, { threshold: 0.2 });
+            document.querySelectorAll('.timeline-item').forEach(function(el) { obs.observe(el); });
         })();
     </script>
 </body>

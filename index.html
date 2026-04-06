@@ -656,9 +656,60 @@
         /* ── Page Load ───────────────────────────────────────── */
         @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
         body { animation: pageIn 0.6s ease forwards; }
+
+        /* ── Scroll Progress ── */
+        #scrollProgress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4,#f43f5e); z-index: 9999; transition: width 0.1s linear; pointer-events: none; }
+
+        /* ── Theme Toggle ── */
+        .theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; color: #fff; cursor: pointer; font-size: 1rem; margin-right: 0.5rem; transition: all 0.3s; }
+        .theme-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+        /* ── Day Theme ── */
+        [data-theme="day"] { --bg: #0c1445; --nebula-opacity: 0.25; }
+        [data-theme="day"] body { background: linear-gradient(135deg, #0c1445, #1a237e); }
+        [data-theme="day"] .nebula:nth-child(1) { background: radial-gradient(circle, #f59e0b, transparent 70%); }
+        [data-theme="day"] .nebula:nth-child(2) { background: radial-gradient(circle, #f97316, transparent 70%); }
+        [data-theme="day"] .nebula:nth-child(3) { background: radial-gradient(circle, #fbbf24, transparent 70%); }
+        [data-theme="day"] .nebula:nth-child(4) { background: radial-gradient(circle, #06b6d4, transparent 70%); }
+        [data-theme="day"] .aurora { background: radial-gradient(ellipse 80% 50% at 20% 40%,#f59e0b,transparent), radial-gradient(ellipse 60% 40% at 70% 60%,#f97316,transparent), radial-gradient(ellipse 70% 50% at 50% 20%,#fbbf24,transparent); }
+
+        /* ── Glitch Logo ── */
+        @keyframes glitch {
+            0%,100% { text-shadow: none; clip-path: none; }
+            20% { text-shadow: -2px 0 #f43f5e, 2px 0 #06b6d4; clip-path: polygon(0 20%,100% 20%,100% 40%,0 40%); }
+            40% { text-shadow: 2px 0 #f43f5e, -2px 0 #06b6d4; clip-path: polygon(0 60%,100% 60%,100% 80%,0 80%); }
+            60% { text-shadow: -2px 2px #8b5cf6, 2px -2px #f43f5e; clip-path: none; }
+        }
+        .nav-logo:hover { animation: glitch 0.3s steps(1) forwards; }
+
+        /* ── Nav Link Dot ── */
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%) scale(0); width: 4px; height: 4px; background: #8b5cf6; border-radius: 50%; transition: transform 0.2s; }
+        .nav-link:hover::after, .nav-link.active::after { transform: translateX(-50%) scale(1); }
+
+        /* ── Cursor Colors ── */
+        .cursor-ring.hover-link { border-color: rgba(99,102,241,0.9) !important; width: 48px !important; height: 48px !important; }
+        .cursor-ring.hover-card { border-color: rgba(6,182,212,0.9) !important; width: 52px !important; height: 52px !important; }
+        .cursor-ring.hover-btn { border-color: rgba(244,63,94,0.9) !important; width: 48px !important; height: 48px !important; }
+        .cursor-particle { position: fixed; pointer-events: none; z-index: 9999; border-radius: 50%; transition: opacity 0.4s; }
+
+        /* ── Magnetic Element ── */
+        .magnetic { transition: transform 0.15s ease; }
+
+        /* ── Enhanced pageIn ── */
+        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
+
+        /* ── Iridescent Orb ── */
+        @keyframes holo { 0% { filter: hue-rotate(0deg) brightness(1); } 100% { filter: hue-rotate(360deg) brightness(1.2); } }
+        .orb { animation: morphOrb 8s ease-in-out infinite, holo 6s linear infinite !important; }
+
+        /* ── Bento 3D Tilt ── */
+        .bento-card { transform-style: preserve-3d; transition: transform 0.1s ease, box-shadow 0.3s ease !important; }
     </style>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
+<div id="scrollProgress" style="position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4,#f43f5e);z-index:9999;transition:width 0.1s linear;pointer-events:none;"></div>
 
     <!-- Navigation -->
     <nav class="nav" id="mainNav">
@@ -668,7 +719,9 @@
             <a href="about.html" class="nav-link">About</a>
             <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="contact.html" class="nav-link">Contact</a>
+            <a href="lab.html" class="nav-link">Lab</a>
         </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" style="background:none;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 10px;color:#fff;cursor:pointer;font-size:1rem;margin-right:0.5rem;transition:all 0.3s;">🌙</button>
         <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
@@ -679,6 +732,7 @@
         <a href="about.html" class="nav-overlay-link">About</a>
         <a href="gallery.html" class="nav-overlay-link">Gallery</a>
         <a href="contact.html" class="nav-overlay-link">Contact</a>
+        <a href="lab.html" class="nav-overlay-link">Lab</a>
     </div>
 
     <!-- Custom Cursor -->
@@ -688,6 +742,7 @@
 
     <!-- Starfield Canvas -->
     <canvas id="starfield"></canvas>
+    <canvas id="webglBg" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.6;pointer-events:none;"></canvas>
 
     <!-- Nebula Clouds -->
     <div class="nebula"></div>
@@ -796,6 +851,7 @@
                 <a href="about.html" class="footer-nav-link">About</a>
                 <a href="gallery.html" class="footer-nav-link">Gallery</a>
                 <a href="contact.html" class="footer-nav-link">Contact</a>
+                <a href="lab.html" class="footer-nav-link">Lab</a>
             </nav>
             <p class="footer-tagline">Zero images. Zero frameworks. Pure code.</p>
         </footer>
@@ -1047,6 +1103,392 @@
                 });
             });
         })();
+
+        /* ── SCROLL PROGRESS ── */
+        (function() {
+            var bar = document.getElementById('scrollProgress');
+            if (!bar) return;
+            window.addEventListener('scroll', function() {
+                var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+                bar.style.width = Math.min(pct || 0, 100) + '%';
+            });
+        })();
+
+        /* ── THEME TOGGLE ── */
+        (function() {
+            var btn = document.getElementById('themeToggle');
+            if (!btn) return;
+            var saved = localStorage.getItem('aether-theme') || 'night';
+            document.documentElement.setAttribute('data-theme', saved);
+            btn.textContent = saved === 'night' ? '🌙' : '☀️';
+            btn.addEventListener('click', function() {
+                var cur = document.documentElement.getAttribute('data-theme') || 'night';
+                var next = cur === 'night' ? 'day' : 'night';
+                document.documentElement.setAttribute('data-theme', next);
+                btn.textContent = next === 'night' ? '🌙' : '☀️';
+                localStorage.setItem('aether-theme', next);
+            });
+        })();
+
+        /* ── PAGE TRANSITIONS ── */
+        (function() {
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                var href = link.getAttribute('href');
+                if (!href || href.charAt(0) === '#' || href.indexOf('http') === 0 || href.indexOf('mailto') === 0) return;
+                link.addEventListener('click', function(e) {
+                    if (e.metaKey || e.ctrlKey) return;
+                    e.preventDefault();
+                    if ('startViewTransition' in document) {
+                        document.startViewTransition(function() { window.location.href = href; });
+                    } else {
+                        document.body.style.transition = 'opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease';
+                        document.body.style.opacity = '0';
+                        document.body.style.transform = 'scale(0.98)';
+                        document.body.style.filter = 'blur(4px)';
+                        setTimeout(function() { window.location.href = href; }, 300);
+                    }
+                });
+            });
+        })();
+
+        /* ── ENHANCED CURSOR (PARTICLE TRAIL) ── */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            var ring = document.getElementById('cursorRing');
+            if (!ring) return;
+            var PALETTE = ['#6366f1','#8b5cf6','#06b6d4','#f43f5e','#f59e0b'];
+            var particles = [];
+            var mx = -100, my = -100;
+
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX; my = e.clientY;
+                var p = document.createElement('div');
+                p.className = 'cursor-particle';
+                var size = 4 + Math.random() * 4;
+                p.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + mx + 'px;top:' + my + 'px;background:' + PALETTE[Math.floor(Math.random() * PALETTE.length)] + ';transform:translate(-50%,-50%);opacity:0.7;';
+                document.body.appendChild(p);
+                particles.push({ el: p, life: 1 });
+                if (particles.length > 30) {
+                    var old = particles.shift();
+                    if (old.el.parentNode) old.el.parentNode.removeChild(old.el);
+                }
+            });
+
+            setInterval(function() {
+                for (var i = particles.length - 1; i >= 0; i--) {
+                    particles[i].life -= 0.08;
+                    if (particles[i].life <= 0) {
+                        if (particles[i].el.parentNode) particles[i].el.parentNode.removeChild(particles[i].el);
+                        particles.splice(i, 1);
+                    } else {
+                        particles[i].el.style.opacity = particles[i].life * 0.7;
+                        var s = particles[i].life * 4 + 1;
+                        particles[i].el.style.width = s + 'px';
+                        particles[i].el.style.height = s + 'px';
+                    }
+                }
+            }, 50);
+
+            document.querySelectorAll('a, .nav-link').forEach(function(el) {
+                el.addEventListener('mouseenter', function() { ring.classList.add('hover-link'); ring.classList.remove('hover-card','hover-btn'); });
+                el.addEventListener('mouseleave', function() { ring.classList.remove('hover-link','hover-card','hover-btn'); });
+            });
+            document.querySelectorAll('.bento-card, .gallery-card, .connect-card, .card').forEach(function(el) {
+                el.addEventListener('mouseenter', function() { ring.classList.add('hover-card'); ring.classList.remove('hover-link','hover-btn'); });
+                el.addEventListener('mouseleave', function() { ring.classList.remove('hover-link','hover-card','hover-btn'); });
+            });
+            document.querySelectorAll('button, .hero-cta, .cta-btn').forEach(function(el) {
+                el.addEventListener('mouseenter', function() { ring.classList.add('hover-btn'); ring.classList.remove('hover-link','hover-card'); });
+                el.addEventListener('mouseleave', function() { ring.classList.remove('hover-link','hover-card','hover-btn'); });
+            });
+        })();
+
+        /* ── MAGNETIC EFFECT ── */
+        (function() {
+            document.querySelectorAll('.hero-cta, .bento-card, button.submit-btn, .gallery-card').forEach(function(el) {
+                el.classList.add('magnetic');
+                el.addEventListener('mousemove', function(e) {
+                    var rect = el.getBoundingClientRect();
+                    var cx = rect.left + rect.width / 2;
+                    var cy = rect.top + rect.height / 2;
+                    var dx = e.clientX - cx;
+                    var dy = e.clientY - cy;
+                    var dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 80) {
+                        var factor = (1 - dist / 80) * 8;
+                        el.style.transform = 'translate(' + (dx/dist*factor) + 'px,' + (dy/dist*factor) + 'px)';
+                    }
+                });
+                el.addEventListener('mouseleave', function() { el.style.transform = ''; });
+            });
+        })();
+
+        /* ── STAGGERED REVEALS ── */
+        (function() {
+            document.querySelectorAll('.bento-grid, .gallery-grid, .timeline, .stats-grid').forEach(function(container) {
+                var children = container.querySelectorAll('.reveal');
+                children.forEach(function(child, i) {
+                    child.style.transitionDelay = (i * 0.1) + 's';
+                });
+            });
+        })();
+
+        /* ── TYPED TEXT EFFECT ── */
+        (function() {
+            document.querySelectorAll('.hero-subtitle[data-typed]').forEach(function(el) {
+                var text = el.getAttribute('data-typed') || el.textContent;
+                el.textContent = '';
+                el.style.opacity = '1';
+                var i = 0;
+                function type() {
+                    if (i < text.length) { el.textContent += text[i++]; setTimeout(type, 40); }
+                }
+                setTimeout(type, 800);
+            });
+        })();
+
+        /* ── SERVICE WORKER ── */
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(function(){});
+        }
+
+        /* ── WEBGL NEBULA BACKGROUND ── */
+        (function() {
+            var canvas = document.getElementById('webglBg');
+            if (!canvas) return;
+            var isMobile = window.matchMedia('(pointer: coarse)').matches;
+            var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) return;
+
+            function resize() {
+                var scale = isMobile ? 0.5 : 1;
+                canvas.width = Math.floor(window.innerWidth * scale);
+                canvas.height = Math.floor(window.innerHeight * scale);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            var vert = 'attribute vec2 a; void main(){gl_Position=vec4(a,0,1);}';
+            var frag = [
+                'precision mediump float;',
+                'uniform float t; uniform vec2 r;',
+                'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5);}',
+                'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+                'return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
+                'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.1;a*=.5;}return v;}',
+                'void main(){',
+                'vec2 uv=(gl_FragCoord.xy-r*.5)/min(r.x,r.y);',
+                'float ts=t*.1;',
+                'float n1=fbm(uv*2.+vec2(ts*.3,ts*.2));',
+                'float n2=fbm(uv*1.5-vec2(ts*.2,ts*.1)+n1);',
+                'float n3=fbm(uv*.8+vec2(ts*.1,-ts*.15)+n2*.5);',
+                'vec3 c1=vec3(.388,.4,.945),c2=vec3(.545,.361,.965),c3=vec3(.024,.714,.831),c4=vec3(.957,.247,.369);',
+                'vec3 col=mix(c1,c2,n1);col=mix(col,c3,n2*.7);col=mix(col,c4,n3*.4);',
+                'col*=.6+.4*n1;',
+                'gl_FragColor=vec4(col,1.);}'
+            ].join('');
+
+            function mkSh(type, src) {
+                var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s;
+            }
+            var prog = gl.createProgram();
+            gl.attachShader(prog, mkSh(gl.VERTEX_SHADER, vert));
+            gl.attachShader(prog, mkSh(gl.FRAGMENT_SHADER, frag));
+            gl.linkProgram(prog);
+            if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.style.display = 'none'; return; }
+            gl.useProgram(prog);
+
+            var buf = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+            var aLoc = gl.getAttribLocation(prog, 'a');
+            gl.enableVertexAttribArray(aLoc);
+            gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+
+            var tLoc = gl.getUniformLocation(prog, 't');
+            var rLoc = gl.getUniformLocation(prog, 'r');
+            var start = Date.now();
+
+            function render() {
+                requestAnimationFrame(render);
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.uniform1f(tLoc, (Date.now() - start) / 1000);
+                gl.uniform2f(rLoc, canvas.width, canvas.height);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            }
+            render();
+        })();
+
+        /* ── BENTO 3D TILT ── */
+        (function() {
+            document.querySelectorAll('.bento-card').forEach(function(card) {
+                card.addEventListener('mousemove', function(e) {
+                    var rect = card.getBoundingClientRect();
+                    var x = (e.clientX - rect.left) / rect.width - 0.5;
+                    var y = (e.clientY - rect.top) / rect.height - 0.5;
+                    card.style.transform = 'perspective(600px) rotateY(' + (x*12) + 'deg) rotateX(' + (-y*12) + 'deg) scale(1.03)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    card.style.transform = '';
+                });
+            });
+        })();
+
+        /* ── PARALLAX HERO TITLE ── */
+        (function() {
+            var title = document.querySelector('.hero-title');
+            if (!title) return;
+            window.addEventListener('scroll', function() {
+                title.style.transform = 'translateY(' + (window.scrollY * 0.3) + 'px)';
+            });
+        })();
+
+        /* ── KONAMI CODE SUPERNOVA ── */
+        (function() {
+            var CODE = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+            var idx = 0;
+            document.addEventListener('keydown', function(e) {
+                if (e.key === CODE[idx]) { idx++; } else { idx = 0; }
+                if (idx === CODE.length) {
+                    idx = 0;
+                    triggerSupernova();
+                }
+            });
+
+            function triggerSupernova() {
+                var el = document.getElementById('supernova');
+                if (!el) return;
+                el.style.display = 'block';
+                el.style.opacity = '0';
+                el.style.transition = 'none';
+                el.style.background = 'radial-gradient(circle at center,#fff 0%,rgba(255,255,255,0.8) 20%,transparent 70%)';
+
+                var canvas = document.createElement('canvas');
+                canvas.style.cssText = 'position:fixed;inset:0;z-index:99998;pointer-events:none;';
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                document.body.appendChild(canvas);
+                var ctx = canvas.getContext('2d');
+                var particles = [];
+                var COLORS = ['#6366f1','#8b5cf6','#06b6d4','#f43f5e','#f59e0b','#fff'];
+                for (var i = 0; i < 200; i++) {
+                    var angle = Math.random() * Math.PI * 2;
+                    var speed = 2 + Math.random() * 8;
+                    particles.push({
+                        x: window.innerWidth/2, y: window.innerHeight/2,
+                        vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed,
+                        life: 1, size: 2+Math.random()*4,
+                        color: COLORS[Math.floor(Math.random()*COLORS.length)]
+                    });
+                }
+
+                var start = Date.now();
+                el.style.transition = 'opacity 0.2s ease';
+                el.style.opacity = '0.9';
+
+                function animSupernova() {
+                    var elapsed = Date.now() - start;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    var alive = false;
+                    particles.forEach(function(p) {
+                        p.x += p.vx; p.y += p.vy;
+                        p.vy += 0.05;
+                        p.life -= 0.012;
+                        if (p.life > 0) {
+                            alive = true;
+                            ctx.globalAlpha = p.life;
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI*2);
+                            ctx.fillStyle = p.color;
+                            ctx.fill();
+                        }
+                    });
+                    ctx.globalAlpha = 1;
+
+                    if (elapsed > 300) { el.style.opacity = '0'; }
+                    if (alive && elapsed < 3000) requestAnimationFrame(animSupernova);
+                    else {
+                        canvas.parentNode.removeChild(canvas);
+                        el.style.display = 'none';
+                    }
+                }
+                animSupernova();
+            }
+        })();
+
+        /* ── TRIPLE-CLICK ORB EXPLOSION ── */
+        (function() {
+            var orbEl = document.getElementById('orb-element');
+            if (!orbEl) return;
+            var clickCount = 0;
+            var clickTimer = null;
+
+            orbEl.addEventListener('click', function() {
+                clickCount++;
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(function() { clickCount = 0; }, 500);
+                if (clickCount >= 3) {
+                    clickCount = 0;
+                    explodeOrb();
+                }
+            });
+
+            function explodeOrb() {
+                var rect = orbEl.getBoundingClientRect();
+                var cx = rect.left + rect.width / 2;
+                var cy = rect.top + rect.height / 2;
+                orbEl.style.opacity = '0';
+                var COLORS = ['#6366f1','#8b5cf6','#06b6d4','#f43f5e','#f59e0b'];
+                var dots = [];
+                for (var i = 0; i < 60; i++) {
+                    var d = document.createElement('div');
+                    var angle = Math.random() * Math.PI * 2;
+                    var dist = 20 + Math.random() * 120;
+                    var size = 3 + Math.random() * 6;
+                    d.style.cssText = 'position:fixed;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + COLORS[Math.floor(Math.random()*COLORS.length)] + ';left:' + cx + 'px;top:' + cy + 'px;transform:translate(-50%,-50%);pointer-events:none;z-index:9997;transition:all 2s cubic-bezier(.2,.8,.3,1);';
+                    document.body.appendChild(d);
+                    dots.push({ el: d, tx: cx + Math.cos(angle)*dist, ty: cy + Math.sin(angle)*dist });
+                }
+                setTimeout(function() {
+                    dots.forEach(function(dot) {
+                        dot.el.style.left = dot.tx + 'px';
+                        dot.el.style.top = dot.ty + 'px';
+                        dot.el.style.opacity = '0';
+                    });
+                }, 50);
+                setTimeout(function() {
+                    dots.forEach(function(dot) {
+                        dot.el.style.left = cx + 'px';
+                        dot.el.style.top = cy + 'px';
+                        dot.el.style.opacity = '1';
+                    });
+                    setTimeout(function() {
+                        dots.forEach(function(dot) { if (dot.el.parentNode) dot.el.parentNode.removeChild(dot.el); });
+                        orbEl.style.opacity = '1';
+                    }, 2000);
+                }, 1500);
+            }
+        })();
+
+        /* ── CONSOLE EASTER EGG ── */
+        (function() {
+            console.log(
+                '%c\n' +
+                '   Æ Æ Æ  ETHER\n' +
+                '  ╔═══════════════════════════════════╗\n' +
+                '  ║   ✦  Æ T H E R  ✦               ║\n' +
+                '  ║                                   ║\n' +
+                '  ║  You found the source.            ║\n' +
+                '  ║  The cosmos thanks you. ✦         ║\n' +
+                '  ║                                   ║\n' +
+                '  ║  Built with: pure light,          ║\n' +
+                '  ║  zero dependencies, and           ║\n' +
+                '  ║  a love for the infinite.         ║\n' +
+                '  ╚═══════════════════════════════════╝\n',
+                'color: #8b5cf6; font-family: monospace; font-size: 12px;'
+            );
+        })();
     </script>
+<div id="supernova" style="position:fixed;inset:0;z-index:99999;pointer-events:none;opacity:0;display:none;background:radial-gradient(circle at center,#fff,transparent 70%);"></div>
 </body>
 </html>
