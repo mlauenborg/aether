@@ -650,7 +650,7 @@
         (function () {
             const canvas = document.getElementById('starfield');
             const ctx = canvas.getContext('2d');
-            const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+            const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
             let W, H;
             function resize() {
@@ -779,7 +779,7 @@
            CUSTOM CURSOR
            ───────────────────────────────────────────────────── */
         (function () {
-            if (/iPhone|iPad|Android/i.test(navigator.userAgent)) return;
+            if (window.matchMedia('(pointer: coarse)').matches) return;
 
             const dot = document.getElementById('cursorDot');
             const ring = document.getElementById('cursorRing');
