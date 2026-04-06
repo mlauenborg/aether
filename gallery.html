@@ -662,8 +662,6 @@
                         ctx.beginPath();
                         ctx.moveTo(p.trail[t - 1].x, p.trail[t - 1].y);
                         ctx.lineTo(p.trail[t].x, p.trail[t].y);
-                        ctx.strokeStyle = p.color.replace(')', ',' + alpha + ')').replace('rgb(', 'rgba(').replace('#', 'rgba(').replace('rgba(', p.color.startsWith('#') ? 'rgba(' : 'rgba(');
-                        // simpler approach: use hex with alpha approximation
                         ctx.globalAlpha = alpha;
                         ctx.strokeStyle = p.color;
                         ctx.lineWidth = p.size * 0.7;
