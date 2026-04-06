@@ -45,8 +45,8 @@
         .nav-logo:hover { transform: perspective(200px) rotateY(15deg); }
         .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-link { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; position: relative; }
-        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%) scale(0); width: 4px; height: 4px; background: #8b5cf6; border-radius: 50%; transition: transform 0.2s; }
-        .nav-link:hover::after { transform: translateX(-50%) scale(1); }
+        .nav-link:not(.active)::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%) scale(0); width: 4px; height: 4px; background: #8b5cf6; border-radius: 50%; transition: transform 0.2s; }
+        .nav-link:not(.active):hover::after { transform: translateX(-50%) scale(1); }
         .nav-link:hover { color: rgba(255,255,255,0.9); }
         .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
         .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.7); transition: all 0.3s; }
@@ -93,9 +93,9 @@
             <a href="about.html" class="nav-link">About</a>
             <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="contact.html" class="nav-link">Contact</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
             <a href="lab.html" class="nav-link">Lab</a>
         </div>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
         <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
@@ -106,6 +106,7 @@
         <a href="gallery.html" class="nav-overlay-link">Gallery</a>
         <a href="contact.html" class="nav-overlay-link">Contact</a>
         <a href="lab.html" class="nav-overlay-link">Lab</a>
+        <button class="theme-toggle" id="themeToggleMobile" aria-label="Toggle theme">🌙</button>
     </div>
 
     <!-- Cursor -->
@@ -131,16 +132,27 @@
     <script>
         /* ── Theme Toggle ── */
         (function() {
-            const btn = document.getElementById('themeToggle');
             const saved = localStorage.getItem('aether-theme') || 'night';
             document.documentElement.setAttribute('data-theme', saved);
-            btn.textContent = saved === 'night' ? '🌙' : '☀️';
-            btn.addEventListener('click', function() {
-                const cur = document.documentElement.getAttribute('data-theme') || 'night';
-                const next = cur === 'night' ? 'day' : 'night';
+            function applyTheme(next) {
                 document.documentElement.setAttribute('data-theme', next);
-                btn.textContent = next === 'night' ? '🌙' : '☀️';
+                const ic = next === 'night' ? '🌙' : '☀️';
+                const b = document.getElementById('themeToggle');
+                const bm = document.getElementById('themeToggleMobile');
+                if (b) b.textContent = ic;
+                if (bm) bm.textContent = ic;
                 localStorage.setItem('aether-theme', next);
+            }
+            applyTheme(saved);
+            const btn = document.getElementById('themeToggle');
+            if (btn) btn.addEventListener('click', function() {
+                const cur = document.documentElement.getAttribute('data-theme') || 'night';
+                applyTheme(cur === 'night' ? 'day' : 'night');
+            });
+            const btnM = document.getElementById('themeToggleMobile');
+            if (btnM) btnM.addEventListener('click', function() {
+                const cur = document.documentElement.getAttribute('data-theme') || 'night';
+                applyTheme(cur === 'night' ? 'day' : 'night');
             });
         })();
 
