@@ -609,7 +609,6 @@
             align-items: center;
             justify-content: center;
             gap: 2rem;
-            padding-top: 64px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
@@ -655,7 +654,6 @@
         @media (pointer: coarse) { .footer-nav-link { cursor: pointer; } }
 
         /* ── Page Load ───────────────────────────────────────── */
-        @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
         body { animation: pageIn 0.6s ease forwards; }
 
         /* ── Scroll Progress ── */
@@ -698,7 +696,7 @@
         .magnetic { transition: transform 0.15s ease; }
 
         /* ── Enhanced pageIn ── */
-        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
+        @keyframes pageIn { from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: scale(1) translateY(0); filter: none; } }
 
         /* ── Iridescent Orb ── */
         @keyframes holo { 0% { filter: hue-rotate(0deg) brightness(1); } 100% { filter: hue-rotate(360deg) brightness(1.2); } }
@@ -734,7 +732,6 @@
         <a href="gallery.html" class="nav-overlay-link">Gallery</a>
         <a href="contact.html" class="nav-overlay-link">Contact</a>
         <a href="lab.html" class="nav-overlay-link">Lab</a>
-        <button class="theme-toggle" id="themeToggleMobile" aria-label="Toggle theme">🌙</button>
     </div>
 
     <!-- Custom Cursor -->
