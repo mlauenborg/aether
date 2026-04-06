@@ -704,6 +704,24 @@
 
         /* ── Bento 3D Tilt ── */
         .bento-card { transform-style: preserve-3d; transition: transform 0.1s ease, box-shadow 0.3s ease !important; }
+
+        /* ── View Transitions API ── */
+        @view-transition { navigation: auto; }
+        ::view-transition-old(root) { animation: 0.3s ease-out both fadeOut; }
+        ::view-transition-new(root) { animation: 0.3s ease-in both fadeIn; }
+        @keyframes fadeOut { to { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } }
+
+        /* ── Enhanced Day Theme ── */
+        [data-theme="day"] body { background: linear-gradient(135deg, #0a0e2a, #1a1040, #0c1445); }
+        [data-theme="day"] .nebula { opacity: 0.22; }
+        [data-theme="day"] .nebula:nth-child(5) { background: radial-gradient(circle, #e11d48, transparent 70%); }
+        [data-theme="day"] .aurora { opacity: 0.12; background: radial-gradient(ellipse 80% 50% at 20% 40%, #f59e0b, transparent), radial-gradient(ellipse 60% 40% at 70% 60%, #f97316, transparent), radial-gradient(ellipse 70% 50% at 50% 20%, #fbbf24, transparent); }
+        [data-theme="day"] .hero-title { background: linear-gradient(135deg, #f59e0b, #f97316, #e11d48, #f59e0b); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        [data-theme="day"] .nav { background: rgba(10, 14, 42, 0.7); }
+        [data-theme="day"] .nav-logo { background: linear-gradient(135deg, #f59e0b, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        [data-theme="day"] .footer-logo { background: linear-gradient(135deg, #f59e0b, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        [data-theme="day"] #scrollProgress { background: linear-gradient(90deg, #f59e0b, #f97316, #e11d48, #fbbf24); }
     </style>
     <link rel="manifest" href="manifest.json">
 </head>
@@ -1156,10 +1174,8 @@
                     if ('startViewTransition' in document) {
                         document.startViewTransition(function() { window.location.href = href; });
                     } else {
-                        document.body.style.transition = 'opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease';
+                        document.body.style.transition = 'opacity 0.3s ease';
                         document.body.style.opacity = '0';
-                        document.body.style.transform = 'scale(0.98)';
-                        document.body.style.filter = 'blur(4px)';
                         setTimeout(function() { window.location.href = href; }, 300);
                     }
                 });
@@ -1505,5 +1521,27 @@
         })();
     </script>
 <div id="supernova" style="position:fixed;inset:0;z-index:99999;pointer-events:none;opacity:0;display:none;background:radial-gradient(circle at center,#fff,transparent 70%);"></div>
+    <script>
+        /* ── Parallax Scroll (Nebula + Aurora) ── */
+        (function() {
+            var nebulas = document.querySelectorAll('.nebula');
+            var aurora = document.querySelector('.aurora');
+            var speeds = [0.03, 0.05, 0.07, 0.08, 0.1];
+            var ticking = false;
+            var lastScrollY = 0;
+            window.addEventListener('scroll', function() {
+                lastScrollY = window.pageYOffset;
+                    requestAnimationFrame(function() {
+                        nebulas.forEach(function(nebula, i) {
+                            nebula.style.marginTop = -(lastScrollY * (speeds[i] || 0.05)) + 'px';
+                        });
+                        if (aurora) aurora.style.marginTop = -(lastScrollY * 0.04) + 'px';
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
+    </script>
 </body>
 </html>

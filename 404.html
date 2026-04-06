@@ -81,6 +81,13 @@
         .cta-btn { display: inline-block; padding: 0.8rem 2rem; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 40px; color: #fff; text-decoration: none; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; transition: all 0.3s; margin-bottom: 1.5rem; }
         .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(99,102,241,0.4); }
         .error-small { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+
+        /* ── View Transitions API ── */
+        @view-transition { navigation: auto; }
+        ::view-transition-old(root) { animation: 0.3s ease-out both fadeOut; }
+        ::view-transition-new(root) { animation: 0.3s ease-in both fadeIn; }
+        @keyframes fadeOut { to { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -205,8 +212,8 @@
                     if ('startViewTransition' in document) {
                         document.startViewTransition(() => { window.location.href = href; });
                     } else {
-                        document.body.style.opacity = '0';
                         document.body.style.transition = 'opacity 0.3s ease';
+                        document.body.style.opacity = '0';
                         setTimeout(() => { window.location.href = href; }, 300);
                     }
                 });
@@ -329,6 +336,27 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(() => {});
         }
+
+        /* ── Parallax Scroll (Nebula + Aurora) ── */
+        (function() {
+            var nebulas = document.querySelectorAll('.nebula');
+            var aurora = document.querySelector('.aurora');
+            var speeds = [0.03, 0.05, 0.07, 0.08, 0.1];
+            var ticking = false;
+            var lastScrollY = 0;
+            window.addEventListener('scroll', function() {
+                lastScrollY = window.pageYOffset;
+                    requestAnimationFrame(function() {
+                        nebulas.forEach(function(nebula, i) {
+                            nebula.style.marginTop = -(lastScrollY * (speeds[i] || 0.05)) + 'px';
+                        });
+                        if (aurora) aurora.style.marginTop = -(lastScrollY * 0.04) + 'px';
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
     </script>
 </body>
 </html>
