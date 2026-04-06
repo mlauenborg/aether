@@ -1178,6 +1178,14 @@
                         document.body.style.opacity = '0';
                         setTimeout(function() { window.location.href = href; }, 300);
                     }
+                });
+            });
+        })();
+
+        /* ── ENHANCED CURSOR (PARTICLE TRAIL) ── */
+        (function() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            var ring = document.getElementById('cursorRing');
             if (!ring) return;
             var PALETTE = ['#6366f1','#8b5cf6','#06b6d4','#f43f5e','#f59e0b'];
             var particles = [];
