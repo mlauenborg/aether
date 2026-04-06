@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÆTHER — The Manifesto</title>
+    <meta name="description" content="The philosophy behind ÆTHER. Why we built a cosmic experience from nothing but code.">
+    <meta name="theme-color" content="#030014">
+    <meta property="og:title" content="ÆTHER — The Manifesto">
+    <meta property="og:description" content="Why we built ÆTHER from nothing but code.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ────────────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #030014;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        @keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+        body { animation: pageIn 0.6s ease forwards; }
+
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+        }
+
+        /* ── Custom Cursor ───────────────────────────────────── */
+        .cursor-dot,
+        .cursor-ring,
+        .cursor-glow {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            border-radius: 50%;
+            transition: opacity 0.3s;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #e2e8f0;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(226, 232, 240, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.25s, height 0.25s, border-color 0.25s;
+        }
+
+        .cursor-ring.hover {
+            width: 56px;
+            height: 56px;
+            border-color: rgba(99, 102, 241, 0.8);
+        }
+
+        .cursor-glow {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+        }
+
+        @media (pointer: coarse) {
+            .cursor-dot, .cursor-ring, .cursor-glow { display: none; }
+        }
+
+        /* ── Canvas / Background Layers ──────────────────────── */
+        #starfield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.18;
+            z-index: 1;
+            animation: nebulaDrift 30s ease-in-out infinite alternate;
+        }
+
+        .nebula:nth-child(1) { width: 600px; height: 600px; background: radial-gradient(circle, #6366f1, transparent 70%); top: 10%; left: -5%; animation-duration: 35s; }
+        .nebula:nth-child(2) { width: 500px; height: 500px; background: radial-gradient(circle, #8b5cf6, transparent 70%); top: 50%; right: -10%; animation-duration: 28s; animation-delay: -5s; }
+        .nebula:nth-child(3) { width: 450px; height: 450px; background: radial-gradient(circle, #06b6d4, transparent 70%); bottom: 20%; left: 30%; animation-duration: 32s; animation-delay: -10s; }
+        .nebula:nth-child(4) { width: 550px; height: 550px; background: radial-gradient(circle, #f43f5e, transparent 70%); top: 30%; left: 50%; animation-duration: 40s; animation-delay: -15s; }
+        .nebula:nth-child(5) { width: 400px; height: 400px; background: radial-gradient(circle, #f59e0b, transparent 70%); bottom: 5%; right: 20%; animation-duration: 25s; animation-delay: -8s; }
+
+        @keyframes nebulaDrift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -30px) scale(1.15); }
+        }
+
+        /* ── Aurora Overlay ───────────────────────────────────── */
+        .aurora {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.08;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 40%, #6366f1, transparent),
+                radial-gradient(ellipse 60% 40% at 70% 60%, #06b6d4, transparent),
+                radial-gradient(ellipse 70% 50% at 50% 20%, #f43f5e, transparent);
+            animation: auroraDrift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes auroraDrift {
+            0% { transform: translateX(-20px) translateY(0); opacity: 0.06; }
+            50% { opacity: 0.1; }
+            100% { transform: translateX(20px) translateY(-10px); opacity: 0.06; }
+        }
+
+        /* ── Film Grain ──────────────────────────────────────── */
+        .film-grain {
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0.04;
+            animation: grainShift 0.5s steps(4) infinite;
+        }
+
+        @keyframes grainShift {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-2%, -2%); }
+            50% { transform: translate(2%, 2%); }
+            75% { transform: translate(-1%, 1%); }
+            100% { transform: translate(1%, -1%); }
+        }
+
+        /* ── Content Layer ───────────────────────────────────── */
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ── Hero Section ────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: calc(64px + 2rem) 2rem 2rem;
+        }
+
+        .hero-overline {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4, #f43f5e, #8b5cf6);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientCycle 6s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes gradientCycle {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator .line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.3; transform: scaleY(0.6); }
+        }
+
+        /* ── Reveal Animation ────────────────────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Quote Section ───────────────────────────────────── */
+        .quote-section {
+            min-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+            margin-bottom: 2.5rem;
+            border: none;
+        }
+
+        .quote-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-cite {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        /* ── Footer ──────────────────────────────────────────── */
+        .footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Footer Nav ──────────────────────────────────────── */
+        .footer-nav {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+            text-decoration: none;
+            cursor: none;
+            transition: color 0.3s;
+            letter-spacing: 0.05em;
+        }
+        .footer-nav-link:hover { color: rgba(255,255,255,0.7); }
+        @media (pointer: coarse) { .footer-nav-link { cursor: pointer; } }
+
+        /* ── Selection ───────────────────────────────────────── */
+        ::selection {
+            background: rgba(99, 102, 241, 0.3);
+            color: #fff;
+        }
+
+        /* ── Navigation Bar ──────────────────────────────────── */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 64px;
+            background: rgba(3, 0, 20, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transform: translateY(0);
+            transition: transform 0.4s ease;
+        }
+        .nav.hidden { transform: translateY(-100%); }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: none;
+            letter-spacing: 0.02em;
+        }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            cursor: none;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link:hover { color: rgba(255,255,255,0.9); }
+        .nav-link.active { color: #fff; }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #6366f1, #06b6d4);
+        }
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: rgba(255,255,255,0.6);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8999;
+            background: rgba(3, 0, 20, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .nav-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-overlay-link {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 7vw, 2.8rem);
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-overlay-link:hover, .nav-overlay-link.active { color: #fff; }
+
+        @media (pointer: coarse) {
+            .nav-logo, .nav-link { cursor: pointer; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav { padding: 0 1.5rem; }
+        }
+
+        /* ── Philosophy Section ──────────────────────────────── */
+        .philosophy-section {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(99,102,241,0.8);
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .philosophy-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+        }
+        .philosophy-text h2 em {
+            font-style: italic;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .philosophy-text p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.45);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .philosophy-visual {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            aspect-ratio: 1;
+        }
+        #constellationCanvas { width: 100%; height: 100%; display: block; }
+        @media (max-width: 768px) {
+            .philosophy-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .philosophy-visual { aspect-ratio: 4/3; }
+        }
+
+        /* ── Timeline Section ────────────────────────────────── */
+        .timeline-section {
+            padding: 6rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .timeline-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(99,102,241,0.4) 10%, rgba(99,102,241,0.4) 90%, transparent);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -2.5rem;
+            top: 1.2rem;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            box-shadow: 0 0 12px rgba(99,102,241,0.6);
+            margin-left: 5px;
+            transform: translateX(-50%);
+        }
+        .timeline-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            position: relative;
+            transition: border-color 0.3s ease;
+        }
+        .timeline-card:hover { border-color: rgba(99,102,241,0.3); }
+        .timeline-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .timeline-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            margin-bottom: 0.4rem;
+        }
+        .timeline-card p {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.4);
+            font-weight: 300;
+        }
+        .timeline-label {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(99,102,241,0.7);
+        }
+
+        /* ── Stats Section ───────────────────────────────────── */
+        .stats-section {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .stats-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .stats-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid .stat-card:nth-child(5) { grid-column: span 2; }
+        }
+        .stat-card {
+            position: relative;
+            padding: 2.5rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 1.2rem;
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-4px); border-color: rgba(99,102,241,0.3); }
+        .stat-glow {
+            position: absolute;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.15;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #6366f1;
+        }
+        .stat-card:nth-child(2) .stat-glow { background: #06b6d4; }
+        .stat-card:nth-child(3) .stat-glow { background: #8b5cf6; }
+        .stat-card:nth-child(4) .stat-glow { background: #f43f5e; }
+        .stat-card:nth-child(5) .stat-glow { background: #f59e0b; }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: #e2e8f0;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <a href="index.html" class="nav-logo">ÆTHER</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link active">About</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <!-- Mobile Nav Overlay -->
+    <div class="nav-overlay" id="navOverlay">
+        <a href="index.html" class="nav-overlay-link">Home</a>
+        <a href="about.html" class="nav-overlay-link active">About</a>
+        <a href="gallery.html" class="nav-overlay-link">Gallery</a>
+        <a href="contact.html" class="nav-overlay-link">Contact</a>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Starfield Canvas -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Nebula Clouds -->
+    <div class="nebula"></div>
+    <div class="nebula"></div>
+    <div class="nebula"></div>
+    <div class="nebula"></div>
+    <div class="nebula"></div>
+
+    <!-- Aurora -->
+    <div class="aurora"></div>
+
+    <!-- Film Grain (SVG noise) -->
+    <svg class="film-grain" xmlns="http://www.w3.org/2000/svg">
+        <filter id="grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grain)"/>
+    </svg>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <span class="hero-overline reveal">Est. 2024</span>
+            <h1 class="hero-title reveal">The Manifesto</h1>
+            <p class="hero-subtitle reveal">Why we built ÆTHER from nothing but code</p>
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <!-- Philosophy Section -->
+        <section class="philosophy-section">
+            <div class="philosophy-grid">
+                <div class="philosophy-text reveal">
+                    <span class="section-label">Philosophy</span>
+                    <h2>No shortcuts.<br><em>No compromises.</em></h2>
+                    <p>We believe the web has forgotten what it's capable of. Every framework adds weight. Every image is a crutch. Every dependency is a chain.</p>
+                    <p>ÆTHER is a rebellion. A proof that beauty doesn't require tools — only intention. Every star is a mathematical point. Every glow is a gradient function. Every shimmer is a sine wave.</p>
+                    <p>When you strip away the scaffolding, something strange happens: you start to see clearly. The code becomes art. The browser becomes a canvas. The screen becomes a window to something almost alive.</p>
+                </div>
+                <div class="philosophy-visual reveal">
+                    <canvas id="constellationCanvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="timeline-section">
+            <div class="timeline-header reveal">
+                <span class="section-label">Creation Story</span>
+                <h2>The Birth of a Universe</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">💥</div>
+                        <h3>The Big Bang</h3>
+                        <p>Project conceived. A single blank HTML file. The void stares back.</p>
+                        <span class="timeline-label">Origin</span>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">✨</div>
+                        <h3>First Light</h3>
+                        <p>The starfield renders. 600 points of light bloom across a canvas for the first time.</p>
+                        <span class="timeline-label">Iteration I</span>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">🌌</div>
+                        <h3>Nebula Formation</h3>
+                        <p>Colors arrive. Gradients bloom. The aurora breathes across the viewport like a living thing.</p>
+                        <span class="timeline-label">Iteration II</span>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">🔮</div>
+                        <h3>Orbital Mechanics</h3>
+                        <p>The morphing orb materialises. Concentric rings orbit it in an eternal elliptical dance.</p>
+                        <span class="timeline-label">Iteration III</span>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">👁️</div>
+                        <h3>Sentience</h3>
+                        <p>The cursor system awakens. The experience gains eyes, tracking every movement.</p>
+                        <span class="timeline-label">Iteration IV</span>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-icon">🌐</div>
+                        <h3>The Observable Universe</h3>
+                        <p>Full experience deployed. The cosmos is now accessible to anyone with a browser.</p>
+                        <span class="timeline-label">Deployed</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-header reveal">
+                <span class="section-label">By the Numbers</span>
+                <h2>The Zero Equation</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card reveal" data-target="0">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Images</div>
+                </div>
+                <div class="stat-card reveal" data-target="0">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Dependencies</div>
+                </div>
+                <div class="stat-card reveal" data-target="1">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number" data-count="1">1</div>
+                    <div class="stat-label">File</div>
+                </div>
+                <div class="stat-card reveal" data-special="∞">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Stars</div>
+                </div>
+                <div class="stat-card reveal" data-prefix="&lt; " data-target="35" data-suffix="KB">
+                    <div class="stat-glow"></div>
+                    <div class="stat-number">&lt; 35KB</div>
+                    <div class="stat-label">Gzipped</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Section -->
+        <section class="quote-section">
+            <hr class="quote-line reveal">
+            <blockquote class="quote-text reveal">
+                &ldquo;If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.&rdquo;
+            </blockquote>
+            <cite class="quote-cite reveal">— Nikola Tesla</cite>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">ÆTHER</div>
+            <nav class="footer-nav">
+                <a href="index.html" class="footer-nav-link">Home</a>
+                <a href="about.html" class="footer-nav-link">About</a>
+                <a href="gallery.html" class="footer-nav-link">Gallery</a>
+                <a href="contact.html" class="footer-nav-link">Contact</a>
+            </nav>
+            <p class="footer-tagline">Zero images. Zero frameworks. Pure code.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        /* ─────────────────────────────────────────────────────
+           STARFIELD + SHOOTING STARS
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            const isMobile = window.matchMedia('(pointer: coarse)').matches;
+
+            let W, H;
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const layerCounts = isMobile ? [200, 100, 50] : [600, 300, 120];
+            const layerSpeeds = [0.02, 0.05, 0.1];
+            const stars = [];
+
+            for (let layer = 0; layer < 3; layer++) {
+                for (let i = 0; i < layerCounts[layer]; i++) {
+                    const isGiant = Math.random() < 0.15;
+                    stars.push({
+                        x: Math.random() * W,
+                        y: Math.random() * H * 3,
+                        baseRadius: isGiant ? (1.2 + Math.random() * 1.5) : (0.3 + Math.random() * (layer * 0.4 + 0.3)),
+                        layer: layer,
+                        twinkleSpeed: 0.5 + Math.random() * 2,
+                        twinkleOffset: Math.random() * Math.PI * 2,
+                        hue: isGiant ? (Math.random() < 0.5 ? 220 + Math.random() * 30 : 0 + Math.random() * 20) : 0,
+                        saturation: isGiant ? (40 + Math.random() * 30) : 0,
+                        isGiant: isGiant,
+                    });
+                }
+            }
+
+            const shootingStars = [];
+
+            function spawnShootingStar() {
+                shootingStars.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H * 0.4,
+                    vx: 4 + Math.random() * 6,
+                    vy: 2 + Math.random() * 4,
+                    life: 1,
+                    decay: 0.008 + Math.random() * 0.012,
+                    length: 60 + Math.random() * 80,
+                });
+            }
+
+            let scrollY = 0;
+            window.addEventListener('scroll', function () {
+                scrollY = window.pageYOffset;
+            });
+
+            let time = 0;
+            function animate() {
+                ctx.clearRect(0, 0, W, H);
+                time += 0.016;
+
+                for (const star of stars) {
+                    const parallaxY = star.y - scrollY * layerSpeeds[star.layer];
+                    const wrappedY = ((parallaxY % (H * 3)) + H * 3) % (H * 3) - H;
+                    if (wrappedY < -10 || wrappedY > H + 10) continue;
+
+                    const twinkle = 0.5 + 0.5 * Math.sin(time * star.twinkleSpeed + star.twinkleOffset);
+                    const radius = star.baseRadius * (0.7 + twinkle * 0.6);
+                    const alpha = 0.3 + twinkle * 0.7;
+
+                    if (star.isGiant) {
+                        ctx.beginPath();
+                        ctx.arc(star.x, wrappedY, radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + star.hue + ', ' + star.saturation + '%, 75%, ' + alpha + ')';
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(star.x, wrappedY, radius * 3, 0, Math.PI * 2);
+                        ctx.fillStyle = 'hsla(' + star.hue + ', ' + star.saturation + '%, 75%, ' + (alpha * 0.1) + ')';
+                        ctx.fill();
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(star.x, wrappedY, radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(226, 232, 240, ' + alpha + ')';
+                        ctx.fill();
+                    }
+                }
+
+                if (Math.random() < 0.005) spawnShootingStar();
+
+                for (let i = shootingStars.length - 1; i >= 0; i--) {
+                    const s = shootingStars[i];
+                    s.x += s.vx;
+                    s.y += s.vy;
+                    s.life -= s.decay;
+
+                    if (s.life <= 0) { shootingStars.splice(i, 1); continue; }
+
+                    const tailX = s.x - s.vx * (s.length / 6);
+                    const tailY = s.y - s.vy * (s.length / 6);
+                    const gradient = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+                    gradient.addColorStop(0, 'rgba(226, 232, 240, 0)');
+                    gradient.addColorStop(1, 'rgba(226, 232, 240, ' + s.life + ')');
+
+                    ctx.beginPath();
+                    ctx.moveTo(tailX, tailY);
+                    ctx.lineTo(s.x, s.y);
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(226, 232, 240, ' + s.life + ')';
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           CUSTOM CURSOR
+           ───────────────────────────────────────────────────── */
+        (function () {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
+            const dot = document.getElementById('cursorDot');
+            const ring = document.getElementById('cursorRing');
+            const glow = document.getElementById('cursorGlow');
+
+            let mouseX = -100, mouseY = -100;
+            let ringX = -100, ringY = -100;
+            let glowX = -100, glowY = -100;
+
+            document.addEventListener('mousemove', function (e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                dot.style.left = mouseX + 'px';
+                dot.style.top = mouseY + 'px';
+            });
+
+            function followCursor() {
+                ringX += (mouseX - ringX) * 0.15;
+                ringY += (mouseY - ringY) * 0.15;
+                ring.style.left = ringX + 'px';
+                ring.style.top = ringY + 'px';
+
+                glowX += (mouseX - glowX) * 0.08;
+                glowY += (mouseY - glowY) * 0.08;
+                glow.style.left = glowX + 'px';
+                glow.style.top = glowY + 'px';
+
+                requestAnimationFrame(followCursor);
+            }
+            followCursor();
+
+            const interactives = document.querySelectorAll('a, button, .bento-card, .hero-cta, .gallery-card, .connect-card, .timeline-card, .stat-card');
+            interactives.forEach(function (el) {
+                el.addEventListener('mouseenter', function () { ring.classList.add('hover'); });
+                el.addEventListener('mouseleave', function () { ring.classList.remove('hover'); });
+            });
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           SCROLL REVEAL (IntersectionObserver)
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            reveals.forEach(function (el) { observer.observe(el); });
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           NAVIGATION
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const nav = document.getElementById('mainNav');
+            const hamburger = document.getElementById('navHamburger');
+            const overlay = document.getElementById('navOverlay');
+            let lastScrollY = 0;
+
+            window.addEventListener('scroll', function () {
+                const current = window.pageYOffset;
+                if (current > lastScrollY && current > 80) {
+                    nav.classList.add('hidden');
+                } else {
+                    nav.classList.remove('hidden');
+                }
+                lastScrollY = current;
+            });
+
+            hamburger.addEventListener('click', function () {
+                hamburger.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+
+            overlay.querySelectorAll('.nav-overlay-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    hamburger.classList.remove('open');
+                    overlay.classList.remove('open');
+                });
+            });
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           CONSTELLATION CANVAS
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const canvas = document.getElementById('constellationCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let W, H;
+
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                W = canvas.width = rect.width;
+                H = canvas.height = rect.height;
+            }
+            resize();
+
+            const resizeObs = new ResizeObserver(resize);
+            resizeObs.observe(canvas.parentElement);
+
+            const points = [];
+            const COUNT = 60;
+            for (let i = 0; i < COUNT; i++) {
+                points.push({
+                    x: Math.random(),
+                    y: Math.random(),
+                    vx: (Math.random() - 0.5) * 0.0003,
+                    vy: (Math.random() - 0.5) * 0.0003,
+                });
+            }
+
+            let running = true;
+            function draw() {
+                if (!running) return;
+                ctx.clearRect(0, 0, W, H);
+
+                for (const p of points) {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > 1) p.vx *= -1;
+                    if (p.y < 0 || p.y > 1) p.vy *= -1;
+                }
+
+                for (let i = 0; i < points.length; i++) {
+                    for (let j = i + 1; j < points.length; j++) {
+                        const dx = (points[i].x - points[j].x) * W;
+                        const dy = (points[i].y - points[j].y) * H;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(points[i].x * W, points[i].y * H);
+                            ctx.lineTo(points[j].x * W, points[j].y * H);
+                            ctx.strokeStyle = 'rgba(99,102,241,' + (1 - dist / 120) * 0.35 + ')';
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                for (const p of points) {
+                    ctx.beginPath();
+                    ctx.arc(p.x * W, p.y * H, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(139,92,246,0.7)';
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            const obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    running = e.isIntersecting;
+                    if (running) draw();
+                });
+            }, { threshold: 0.1 });
+            obs.observe(canvas.parentElement);
+            draw();
+        })();
+
+        /* ─────────────────────────────────────────────────────
+           STATS COUNTERS
+           ───────────────────────────────────────────────────── */
+        (function () {
+            const cards = document.querySelectorAll('.stat-card[data-target]');
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    const card = entry.target;
+                    const target = parseInt(card.dataset.target);
+                    const prefix = card.dataset.prefix || '';
+                    const suffix = card.dataset.suffix || '';
+                    const el = card.querySelector('.stat-number');
+                    if (!el || target === 0) {
+                        if (el) el.textContent = prefix + '0' + suffix;
+                        observer.unobserve(card);
+                        return;
+                    }
+                    let start = 0;
+                    const duration = 1500;
+                    const step = 16;
+                    const increment = target / (duration / step);
+                    const timer = setInterval(function () {
+                        start = Math.min(start + increment, target);
+                        el.textContent = prefix + Math.floor(start) + suffix;
+                        if (start >= target) clearInterval(timer);
+                    }, step);
+                    observer.unobserve(card);
+                });
+            }, { threshold: 0.3 });
+            cards.forEach(function (c) { observer.observe(c); });
+        })();
+    </script>
+</body>
+</html>
